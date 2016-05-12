@@ -145,7 +145,7 @@ public class FmMotorneSanke extends javax.swing.JFrame {
             String motorneSankeID = txt_motorne_sanke_id.getText();
             String brojSasije = txt_broj_sasije.getText();
             String brojMesta = txt_broj_mesta.getText();
-            String tip = (String) cbox_tip_sanki.getSelectedItem();
+            TipSanki tip = (TipSanki) cbox_tip_sanki.getSelectedItem();
 
             MotorneSanke motorneSanke = kreirajMotorneSanke(motorneSankeID, brojSasije, brojMesta, tip);
             
@@ -220,7 +220,7 @@ public class FmMotorneSanke extends javax.swing.JFrame {
     private javax.swing.JTextField txt_motorne_sanke_id;
     // End of variables declaration//GEN-END:variables
 
-    private MotorneSanke kreirajMotorneSanke(String motorneSankeID, String brojSasije, String brojMesta, String tip) throws Exception {
+    private MotorneSanke kreirajMotorneSanke(String motorneSankeID, String brojSasije, String brojMesta, TipSanki tip) throws Exception {
         MotorneSanke msanke = new MotorneSanke();
         if (motorneSankeID == null || motorneSankeID.isEmpty()){
             throw new Exception("ID nije unet!");
