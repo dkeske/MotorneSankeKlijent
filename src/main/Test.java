@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import pl.kontroler.Kontroler;
+import kontroler.Kontroler;
 import start.StartKlijent;
 
 /**

@@ -10,7 +10,7 @@ import domen.TipSanki;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
-import pl.kontroler.Kontroler;
+import kontroler.Kontroler;
 
 /**
  *

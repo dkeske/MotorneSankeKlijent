@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package pl.kontroler;
+package kontroler;
 
 import domen.AbstractObjekat;
 import domen.MotorneSanke;
@@ -35,7 +35,6 @@ public class Kontroler {
     }
 
     public List<TipSanki> vratiListuTipovaMS() throws Exception {
-        
         
         return null;
     }

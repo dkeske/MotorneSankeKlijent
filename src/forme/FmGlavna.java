@@ -5,6 +5,8 @@
  */
 package forme;
 
+import start.StartKlijent;
+
 /**
  *
  * @author Daniel
@@ -16,6 +18,8 @@ public class FmGlavna extends javax.swing.JFrame {
      */
     public FmGlavna() {
         initComponents();
+        StartKlijent sk = new StartKlijent();
+        sk.start();
     }
 
     /**
@@ -30,6 +34,7 @@ public class FmGlavna extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        prikaz_sanki = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -43,6 +48,14 @@ public class FmGlavna extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jMenuItem1);
+
+        prikaz_sanki.setText("Prikaz motornih sanki");
+        prikaz_sanki.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                prikaz_sankiActionPerformed(evt);
+            }
+        });
+        jMenu1.add(prikaz_sanki);
 
         jMenuBar1.add(jMenu1);
 
@@ -70,6 +83,11 @@ public class FmGlavna extends javax.swing.JFrame {
         FmMotorneSanke fmms = new FmMotorneSanke();
         fmms.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void prikaz_sankiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prikaz_sankiActionPerformed
+        FmSankePrikaz fsp = new FmSankePrikaz();
+        fsp.setVisible(true);
+    }//GEN-LAST:event_prikaz_sankiActionPerformed
 
     /**
      * @param args the command line arguments
@@ -112,5 +130,6 @@ public class FmGlavna extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem prikaz_sanki;
     // End of variables declaration//GEN-END:variables
 }
