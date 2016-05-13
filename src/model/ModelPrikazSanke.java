@@ -16,7 +16,7 @@ import javax.swing.table.AbstractTableModel;
  */
 public class ModelPrikazSanke extends AbstractTableModel {
 
-    List<AbstractObjekat> listaSanki;
+    private List<AbstractObjekat> listaSanki;
 
     public ModelPrikazSanke(List<AbstractObjekat> listaSanki) {
         this.listaSanki = listaSanki;
@@ -44,6 +44,22 @@ public class ModelPrikazSanke extends AbstractTableModel {
                 return ms.getBrojMestaZaSedenje();
             case 3:
                 return ms.getTipSanki();
+            default:
+                return "n/a";
+        }
+    }
+
+    @Override
+    public String getColumnName(int column) {
+        switch (column) {
+            case 0:
+                return "ID";
+            case 1:
+                return "Broj sasije";
+            case 2:
+                return "Broj mesta za sedenje";
+            case 3:
+                return "Tip sanki";
             default:
                 return "n/a";
         }

@@ -26,7 +26,7 @@ public class FmSankePrikaz extends javax.swing.JFrame {
      */
     public FmSankePrikaz() {
         initComponents();
-        srediFormu();
+//        srediFormu();
     }
 
     /**
@@ -42,6 +42,11 @@ public class FmSankePrikaz extends javax.swing.JFrame {
         tbl_sanke = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         tbl_sanke.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -75,6 +80,10 @@ public class FmSankePrikaz extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        srediFormu();
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments
