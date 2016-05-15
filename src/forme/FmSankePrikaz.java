@@ -6,12 +6,10 @@
 package forme;
 
 import domen.AbstractObjekat;
-import domen.MotorneSanke;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.table.DefaultTableModel;
 import kontroler.Kontroler;
 import model.ModelPrikazSanke;
 
