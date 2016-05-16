@@ -217,7 +217,7 @@ public class FmGlavna extends javax.swing.JFrame {
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(FmGlavna.class.getName()).log(Level.SEVERE, null, ex);
             } catch (Exception ex) {
-                Logger.getLogger(FmGlavna.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage());
             }
         }
     }//GEN-LAST:event_btn_loginActionPerformed
