@@ -6,12 +6,14 @@
 package kontroler;
 
 import domen.AbstractObjekat;
+import domen.Korisnik;
 import domen.MotorneSanke;
 import domen.TipSanki;
 import java.io.IOException;
 import komunikacija.Komunikacija;
 import java.util.HashMap;
 import java.util.List;
+import konstante.Konstante;
 import transfer.KlijentTransfer;
 import transfer.ServerTransfer;
 
@@ -52,6 +54,21 @@ public class Kontroler {
         ServerTransfer st = Komunikacija.vratiInstancu().procitajOdgovor();
         if(st.getUspesnost() == 1){
             return (List<AbstractObjekat>) st.getPodaci();
+        }
+        else {
+            return null;
+        }
+    }
+
+    public AbstractObjekat ulogujKorisnika(String username, String password) throws IOException, ClassNotFoundException {
+        System.out.println("Logovanje korisnika...");
+        KlijentTransfer kt = new KlijentTransfer();
+        kt.setOperacija(Konstante.ULOGUJ_KORISNIKA);
+        kt.setParametar(new Korisnik(null, null, username, password));
+        Komunikacija.vratiInstancu().posaljiZahtev(kt);
+        ServerTransfer st = Komunikacija.vratiInstancu().procitajOdgovor();
+        if(st.getUspesnost() == 1){
+            return (AbstractObjekat) st.getPodaci();
         }
         else {
             return null;
