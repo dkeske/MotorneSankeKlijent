@@ -9,10 +9,13 @@ import domen.AbstractObjekat;
 import domen.Korisnik;
 import domen.MotorneSanke;
 import domen.TipSanki;
+import exception.PovezivanjeException;
 import java.io.IOException;
 import komunikacija.Komunikacija;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import konstante.Konstante;
 import transfer.KlijentTransfer;
 import transfer.ServerTransfer;
@@ -46,21 +49,27 @@ public class Kontroler {
         
         
     }
-    public List<AbstractObjekat> ucitajListuMotornihSanki() throws IOException, ClassNotFoundException{
-        System.out.println("Ucitavanje liste MS");
-        KlijentTransfer kt = new KlijentTransfer();
-        kt.setOperacija(konstante.Konstante.UCITAJ_LISTU_MOTORNIH_SANKI);
-        Komunikacija.vratiInstancu().posaljiZahtev(kt);
-        ServerTransfer st = Komunikacija.vratiInstancu().procitajOdgovor();
-        if(st.getUspesnost() == 1){
-            return (List<AbstractObjekat>) st.getPodaci();
-        }
-        else {
-            return null;
+    public List<AbstractObjekat> ucitajListuMotornihSanki() throws PovezivanjeException, Exception {
+        List<AbstractObjekat> lista;
+        try {
+            System.out.println("Ucitavanje liste MS");
+            KlijentTransfer kt = new KlijentTransfer();
+            kt.setOperacija(konstante.Konstante.UCITAJ_LISTU_MOTORNIH_SANKI);
+            Komunikacija.vratiInstancu().posaljiZahtev(kt);
+            ServerTransfer st = Komunikacija.vratiInstancu().procitajOdgovor();
+            if(st.getUspesnost() == 1){
+                return (List<AbstractObjekat>) st.getPodaci();
+            }
+            else {
+                Exception exec = st.getException();
+                throw exec;
+            }
+        } catch (IOException | ClassNotFoundException ex) {
+            throw new PovezivanjeException("Doslo je do greske u komunikaciji");
         }
     }
 
-    public AbstractObjekat ulogujKorisnika(String username, String password) throws IOException, ClassNotFoundException {
+    public AbstractObjekat ulogujKorisnika(String username, String password) throws Exception {
         System.out.println("Logovanje korisnika...");
         KlijentTransfer kt = new KlijentTransfer();
         kt.setOperacija(Konstante.ULOGUJ_KORISNIKA);
@@ -71,7 +80,8 @@ public class Kontroler {
             return (AbstractObjekat) st.getPodaci();
         }
         else {
-            return null;
+            Exception exec = st.getException();
+            throw exec;
         }
     }
 }

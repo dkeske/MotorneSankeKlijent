@@ -8,9 +8,12 @@ package forme;
 import domen.AbstractObjekat;
 import java.awt.Color;
 import java.io.IOException;
+import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.border.LineBorder;
+import komunikacija.Komunikacija;
 import kontroler.Kontroler;
 import start.StartKlijent;
 
@@ -26,8 +29,8 @@ public class FmGlavna extends javax.swing.JFrame {
     public FmGlavna() {
         initComponents();
         srediFormu();
-        StartKlijent sk = new StartKlijent();
-        sk.start();
+//        StartKlijent sk = new StartKlijent();
+//        sk.start();
     }
 
     /**
@@ -190,23 +193,30 @@ public class FmGlavna extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_usernameActionPerformed
 
     private void btn_loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_loginActionPerformed
-        // TODO add your handling code here:
+        try {
+            pokreniSoket();
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(rootPane, "Konekcija na server nije uspela!");
+            return;
+        }
         resetBorder();
         String username = txt_username.getText();
         String password = txt_password.getText();
-        if(username.isEmpty()){
+        if (username.isEmpty()) {
             txt_username.setBorder(new LineBorder(Color.red));
         }
-        if(password.isEmpty()){
+        if (password.isEmpty()) {
             txt_password.setBorder(new LineBorder(Color.red));
         }
-        if(!username.isEmpty() && !password.isEmpty()){
+        if (!username.isEmpty() && !password.isEmpty()) {
             try {
                 AbstractObjekat o = Kontroler.vratiInstancuKontrolera().ulogujKorisnika(username, password);
                 ulogujPanel();
             } catch (IOException ex) {
                 Logger.getLogger(FmGlavna.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ClassNotFoundException ex) {
+                Logger.getLogger(FmGlavna.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
                 Logger.getLogger(FmGlavna.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -272,14 +282,24 @@ public class FmGlavna extends javax.swing.JFrame {
     private void resetBorder() {
         txt_password.setBorder(new LineBorder(Color.black));
         txt_username.setBorder(new LineBorder(Color.black));
-        
+
     }
 
     private void ulogujPanel() {
         lbl_password.setVisible(false);
         lbl_username.setVisible(false);
         txt_password.setVisible(false);
+        txt_username.setVisible(false);
         lbl_username.setVisible(false);
         lbl_ulogovan.setText("Ulogovani ste");
+        jMenuBar1.setVisible(true);
+        btn_login.setVisible(false);
+    }
+
+    private void pokreniSoket() throws IOException {
+        System.out.println("Postavljam socket");
+        Socket socket = new Socket("127.0.0.1", 9000);
+        Komunikacija.vratiInstancu().setSocket(socket);
+        System.out.println("Postavio socket!");
     }
 }

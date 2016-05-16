@@ -30,7 +30,7 @@ public class StartKlijent extends Thread{
             System.out.println("Postavio socket!");
             
         } catch (IOException ex) {
-            Logger.getLogger(StartKlijent.class.getName()).log(Level.SEVERE, null, ex);
+//            throw new Exception("Konekcija na server nije uspela!");
         }
         
     }

@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import kontroler.Kontroler;
 import model.ModelPrikazSanke;
 
@@ -124,14 +125,14 @@ public class FmSankePrikaz extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void srediFormu() {
+        List<AbstractObjekat> lista;
         try {
-            List<AbstractObjekat> lista = Kontroler.vratiInstancuKontrolera().ucitajListuMotornihSanki();
+            lista = Kontroler.vratiInstancuKontrolera().ucitajListuMotornihSanki();
             tbl_sanke.setModel(new ModelPrikazSanke(lista));
-            
-        } catch (IOException ex) {
-            Logger.getLogger(FmSankePrikaz.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FmSankePrikaz.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage());
         }
+
     }
 }
+
