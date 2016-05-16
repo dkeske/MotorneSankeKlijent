@@ -43,7 +43,7 @@ public class ModelPrikazSanke extends AbstractTableModel {
             case 2:
                 return ms.getBrojMestaZaSedenje();
             case 3:
-                return ms.getTipSanki();
+                return ms.getTipSanki().getNazivTipa();
             default:
                 return "n/a";
         }
