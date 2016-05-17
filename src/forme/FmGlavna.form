@@ -32,6 +32,21 @@
             <Property name="text" type="java.lang.String" value="Vozac"/>
           </Properties>
         </Menu>
+        <Menu class="javax.swing.JMenu" name="menu_korisnik">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="ImeKorisnika"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Izloguj se"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem2ActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
       </SubComponents>
     </Menu>
   </NonVisualComponents>

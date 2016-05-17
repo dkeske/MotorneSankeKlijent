@@ -6,6 +6,7 @@
 package forme;
 
 import domen.AbstractObjekat;
+import domen.Korisnik;
 import java.awt.Color;
 import java.io.IOException;
 import java.net.Socket;
@@ -23,6 +24,7 @@ import start.StartKlijent;
  */
 public class FmGlavna extends javax.swing.JFrame {
 
+    Korisnik korisnik;
     /**
      * Creates new form GlavnaForma
      */
@@ -55,6 +57,8 @@ public class FmGlavna extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         prikaz_sanki = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        menu_korisnik = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -155,6 +159,18 @@ public class FmGlavna extends javax.swing.JFrame {
         jMenu2.setText("Vozac");
         jMenuBar1.add(jMenu2);
 
+        menu_korisnik.setText("ImeKorisnika");
+
+        jMenuItem2.setText("Izloguj se");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        menu_korisnik.add(jMenuItem2);
+
+        jMenuBar1.add(menu_korisnik);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -210,7 +226,7 @@ public class FmGlavna extends javax.swing.JFrame {
         }
         if (!username.isEmpty() && !password.isEmpty()) {
             try {
-                AbstractObjekat o = Kontroler.vratiInstancuKontrolera().ulogujKorisnika(username, password);
+                korisnik = (Korisnik) Kontroler.vratiInstancuKontrolera().ulogujKorisnika(username, password);
                 ulogujPanel();
             } catch (IOException ex) {
                 Logger.getLogger(FmGlavna.class.getName()).log(Level.SEVERE, null, ex);
@@ -218,9 +234,15 @@ public class FmGlavna extends javax.swing.JFrame {
                 Logger.getLogger(FmGlavna.class.getName()).log(Level.SEVERE, null, ex);
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+                
             }
         }
     }//GEN-LAST:event_btn_loginActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -264,11 +286,13 @@ public class FmGlavna extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lbl_password;
     private javax.swing.JLabel lbl_title;
     private javax.swing.JLabel lbl_ulogovan;
     private javax.swing.JLabel lbl_username;
+    private javax.swing.JMenu menu_korisnik;
     private javax.swing.JMenuItem prikaz_sanki;
     private javax.swing.JTextField txt_password;
     private javax.swing.JTextField txt_username;
@@ -282,7 +306,6 @@ public class FmGlavna extends javax.swing.JFrame {
     private void resetBorder() {
         txt_password.setBorder(new LineBorder(Color.black));
         txt_username.setBorder(new LineBorder(Color.black));
-
     }
 
     private void ulogujPanel() {
@@ -293,7 +316,10 @@ public class FmGlavna extends javax.swing.JFrame {
         lbl_username.setVisible(false);
         lbl_ulogovan.setText("Ulogovani ste");
         jMenuBar1.setVisible(true);
+        menu_korisnik.setText(korisnik.getKorisnickoIme());
+//        menu_korisnik.setText("123");
         btn_login.setVisible(false);
+        System.out.println("Dovde doslo");
     }
 
     private void pokreniSoket() throws IOException {

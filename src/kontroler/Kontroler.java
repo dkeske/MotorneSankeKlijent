@@ -14,8 +14,6 @@ import java.io.IOException;
 import komunikacija.Komunikacija;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import konstante.Konstante;
 import transfer.KlijentTransfer;
 import transfer.ServerTransfer;
@@ -54,7 +52,7 @@ public class Kontroler {
         try {
             System.out.println("Ucitavanje liste MS");
             KlijentTransfer kt = new KlijentTransfer();
-            kt.setOperacija(konstante.Konstante.UCITAJ_LISTU_MOTORNIH_SANKI);
+            kt.setOperacija(Konstante.UCITAJ_LISTU_MOTORNIH_SANKI);
             Komunikacija.vratiInstancu().posaljiZahtev(kt);
             ServerTransfer st = Komunikacija.vratiInstancu().procitajOdgovor();
             if(st.getUspesnost() == 1){
@@ -73,7 +71,9 @@ public class Kontroler {
         System.out.println("Logovanje korisnika...");
         KlijentTransfer kt = new KlijentTransfer();
         kt.setOperacija(Konstante.ULOGUJ_KORISNIKA);
-        kt.setParametar(new Korisnik(null, null, username, password));
+        Korisnik parametar = new Korisnik(null, null, username, password); 
+        parametar.setHashPassword(password);
+        kt.setParametar(parametar);
         Komunikacija.vratiInstancu().posaljiZahtev(kt);
         ServerTransfer st = Komunikacija.vratiInstancu().procitajOdgovor();
         if(st.getUspesnost() == 1){
