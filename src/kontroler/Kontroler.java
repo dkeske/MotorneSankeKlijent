@@ -71,7 +71,7 @@ public class Kontroler {
         System.out.println("Logovanje korisnika...");
         KlijentTransfer kt = new KlijentTransfer();
         kt.setOperacija(Konstante.ULOGUJ_KORISNIKA);
-        Korisnik parametar = new Korisnik(null, null, username, password); 
+        Korisnik parametar = new Korisnik(null, username, password); 
         parametar.setHashPassword(password);
         kt.setParametar(parametar);
         Komunikacija.vratiInstancu().posaljiZahtev(kt);
