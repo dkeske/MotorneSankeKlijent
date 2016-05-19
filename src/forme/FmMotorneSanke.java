@@ -8,24 +8,43 @@ package forme;
 import domen.AbstractObjekat;
 import domen.MotorneSanke;
 import domen.TipSanki;
+import java.awt.HeadlessException;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import kontroler.Kontroler;
+import sesija.Sesija;
 
 /**
  *
  * @author Daniel
  */
 public class FmMotorneSanke extends javax.swing.JFrame {
-
+    private MotorneSanke ms;
+    FmSankePrikaz parent;
+    String mode;
     /**
      * Creates new form FmMotorneSanke
      */
+    
     public FmMotorneSanke() {
         initComponents();
         pripremiFormu();
+        mode = "create";
     }
+
+    public FmMotorneSanke(MotorneSanke ms, FmSankePrikaz parent) throws HeadlessException {
+        initComponents();
+        pripremiFormu();
+        this.ms = ms;
+        ucitajSankeUFormu();
+        this.parent = parent;
+        this.parent.setEnabled(false);
+        mode = "edit";
+    }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -50,6 +69,11 @@ public class FmMotorneSanke extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jLabel1.setText("Motorne sanke ID");
 
@@ -146,14 +170,19 @@ public class FmMotorneSanke extends javax.swing.JFrame {
     private void btn_sacuvajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_sacuvajActionPerformed
         // TODO add your handling code here:
         try {
-
+            String motorneSankeID = txt_motorne_sanke_id.getText();
             String brojSasije = txt_broj_sasije.getText();
             String brojMesta = txt_broj_mesta.getText();
             TipSanki tip = (TipSanki) cbox_tip_sanki.getSelectedItem();
-            MotorneSanke motorneSanke = kreirajMotorneSanke(brojSasije, brojMesta, tip);
-            AbstractObjekat o = Kontroler.vratiInstancuKontrolera().sacuvajMotorneSanke(motorneSanke);
-            JOptionPane.showMessageDialog(rootPane, "Uspesno sacuvane sanke ID : " + o.vratiVrednostPK());
-            txt_motorne_sanke_id.setText(o.vratiVrednostPK());
+            MotorneSanke motorneSanke = kreirajMotorneSanke(motorneSankeID, brojSasije, brojMesta, tip);
+            MotorneSanke motS = (MotorneSanke) Kontroler.vratiInstancuKontrolera().sacuvajMotorneSanke(motorneSanke);
+            String ID = motS.getPrimaryKey();
+            if(mode.equals("edit")){
+                ID = motS.getMotorneSankeID();
+                updateListe(motS);
+            }
+            JOptionPane.showMessageDialog(rootPane, "Uspesno sacuvane sanke ID : " + ID);
+            txt_motorne_sanke_id.setText(ID);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, e.getMessage());
         }
@@ -163,18 +192,25 @@ public class FmMotorneSanke extends javax.swing.JFrame {
         // TODO add your handling code here:
         txt_motorne_sanke_id.setText("");
         txt_broj_sasije.setText("");
-        txt_broj_sasije.setText("");
+        txt_broj_mesta.setText("");
         
     }//GEN-LAST:event_btn_ponistiActionPerformed
 
     private void btn_otkaziActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_otkaziActionPerformed
         setVisible(false);
+        parent.setEnabled(true);
         dispose();
     }//GEN-LAST:event_btn_otkaziActionPerformed
 
     private void cbox_tip_sankiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbox_tip_sankiActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbox_tip_sankiActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        if(mode.equals("edit")){
+            parent.setEnabled(true);
+        }
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
@@ -225,7 +261,7 @@ public class FmMotorneSanke extends javax.swing.JFrame {
     private javax.swing.JTextField txt_motorne_sanke_id;
     // End of variables declaration//GEN-END:variables
 
-    private MotorneSanke kreirajMotorneSanke(String brojSasije, String brojMesta, TipSanki tip) throws Exception {
+    private MotorneSanke kreirajMotorneSanke(String motorneSankeID, String brojSasije, String brojMesta, TipSanki tip) throws Exception {
         MotorneSanke msanke = new MotorneSanke();
 //        if (motorneSankeID == null || motorneSankeID.isEmpty()){
 //            throw new Exception("ID nije unet!");
@@ -238,7 +274,12 @@ public class FmMotorneSanke extends javax.swing.JFrame {
         } catch (NumberFormatException nfe){
             throw new Exception("Broj mesta za sedenje nije dobro unet!");
         }
-        msanke.setMotorneSankeID("0");
+        if(mode.equals("edit")){
+            System.out.println(mode + " je mode");
+            msanke.setMotorneSankeID(motorneSankeID);
+        } else {
+            msanke.setMotorneSankeID("0");
+        }
         msanke.setBrojSasije(brojSasije);
         msanke.setBrojMestaZaSedenje(brojMesta);
         msanke.setTipSanki(tip);
@@ -259,5 +300,19 @@ public class FmMotorneSanke extends javax.swing.JFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, e.getMessage());
         }
+    }
+
+    private void ucitajSankeUFormu() {
+        txt_motorne_sanke_id.setText(ms.getMotorneSankeID());
+        txt_broj_sasije.setText(ms.getBrojSasije());
+        txt_broj_mesta.setText(ms.getBrojMestaZaSedenje());
+        cbox_tip_sanki.setSelectedItem(ms.getTipSanki());
+    }
+
+    private void updateListe(MotorneSanke motS) {
+        List<MotorneSanke> listaMS = (List<MotorneSanke>) Sesija.vratiInstancu().getMapa().get("lista");
+        listaMS.remove(motS);
+        listaMS.add(motS);
+        parent.tableUpdate();
     }
 }

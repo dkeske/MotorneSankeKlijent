@@ -65,4 +65,12 @@ public class ModelPrikazSanke extends AbstractTableModel {
         }
     }
 
+    public List<AbstractObjekat> getListaSanki() {
+        return listaSanki;
+    }
+
+    public void setListaSanki(List<AbstractObjekat> listaSanki) {
+        this.listaSanki = listaSanki;
+    }
+
 }

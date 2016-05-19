@@ -6,6 +6,7 @@
 package forme;
 
 import domen.AbstractObjekat;
+import domen.MotorneSanke;
 import domen.RezervacijaVoznje;
 import domen.StavkaRezervacijeVoznje;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import kontroler.Kontroler;
 import model.ModelPrikazSanke;
+import sesija.Sesija;
 
 /**
  *
@@ -41,9 +43,13 @@ public class FmSankePrikaz extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_sanke = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
+        btn_izmeni = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
             }
@@ -69,6 +75,13 @@ public class FmSankePrikaz extends javax.swing.JFrame {
             }
         });
 
+        btn_izmeni.setText("Izmeni");
+        btn_izmeni.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_izmeniActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -78,7 +91,9 @@ public class FmSankePrikaz extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(241, 241, 241)
+                .addGap(76, 76, 76)
+                .addComponent(btn_izmeni)
+                .addGap(121, 121, 121)
                 .addComponent(jButton1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -88,7 +103,9 @@ public class FmSankePrikaz extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(53, 53, 53)
-                .addComponent(jButton1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(btn_izmeni))
                 .addContainerGap(57, Short.MAX_VALUE))
         );
 
@@ -114,6 +131,18 @@ public class FmSankePrikaz extends javax.swing.JFrame {
             Logger.getLogger(FmSankePrikaz.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btn_izmeniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_izmeniActionPerformed
+        ModelPrikazSanke mps = (ModelPrikazSanke) tbl_sanke.getModel();
+        MotorneSanke selected = (MotorneSanke) mps.getListaSanki().get(tbl_sanke.getSelectedRow());
+        FmMotorneSanke izmena = new FmMotorneSanke(selected, this);
+        izmena.setVisible(true);
+    }//GEN-LAST:event_btn_izmeniActionPerformed
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_formWindowActivated
 
     /**
      * @param args the command line arguments
@@ -151,6 +180,7 @@ public class FmSankePrikaz extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_izmeni;
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tbl_sanke;
@@ -161,10 +191,15 @@ public class FmSankePrikaz extends javax.swing.JFrame {
         try {
             lista = Kontroler.vratiInstancuKontrolera().ucitajListuMotornihSanki();
             tbl_sanke.setModel(new ModelPrikazSanke(lista));
+            Sesija.vratiInstancu().getMapa().put("listaSanki", lista);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage());
         }
 
+    }
+    public void tableUpdate(){
+        ModelPrikazSanke mps = (ModelPrikazSanke) tbl_sanke.getModel();
+        mps.fireTableDataChanged();
     }
 }
 
