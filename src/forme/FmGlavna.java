@@ -323,9 +323,12 @@ public class FmGlavna extends javax.swing.JFrame {
     }
 
     private void pokreniSoket() throws IOException {
-        System.out.println("Postavljam socket");
-        Socket socket = new Socket("127.0.0.1", 9000);
-        Komunikacija.vratiInstancu().setSocket(socket);
-        System.out.println("Postavio socket!");
+        if(Komunikacija.vratiInstancu().getSocket()==null){
+            System.out.println("Postavljam socket");
+            Socket socket = new Socket("127.0.0.1", 9000);
+            Komunikacija.vratiInstancu().setSocket(socket);
+            System.out.println("Postavio socket!");
+            
+        }
     }
 }

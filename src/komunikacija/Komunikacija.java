@@ -19,7 +19,11 @@ import transfer.ServerTransfer;
  */
 public class Komunikacija {
 
-    private Socket socket;
+    private static Socket socket;
+
+    public Socket getSocket() {
+        return socket;
+    }
     ObjectInputStream in;
     ObjectOutputStream out;
     private static Komunikacija instance;
@@ -32,7 +36,7 @@ public class Komunikacija {
     }
 
     public void setSocket(Socket socket) throws IOException {
-        this.socket = socket;
+        Komunikacija.socket = socket;
         out = new ObjectOutputStream(this.socket.getOutputStream());
         in = new ObjectInputStream(this.socket.getInputStream());
         System.out.println("Podesio sam out!!!");

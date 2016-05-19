@@ -7,20 +7,18 @@ package start;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import komunikacija.Komunikacija;
 
 /**
  *
  * @author Daniel
  */
-public class StartKlijent extends Thread{
+public class StartKlijent extends Thread {
 
     public StartKlijent() {
     }
 
-    
     @Override
     public void run() {
         try {
@@ -28,11 +26,11 @@ public class StartKlijent extends Thread{
             Socket socket = new Socket("127.0.0.1", 9000);
             Komunikacija.vratiInstancu().setSocket(socket);
             System.out.println("Postavio socket!");
-            
+
         } catch (IOException ex) {
-//            throw new Exception("Konekcija na server nije uspela!");
+            JOptionPane.showMessageDialog(null, "Konekcija na server nije uspela!");
         }
-        
+
     }
-    
+
 }

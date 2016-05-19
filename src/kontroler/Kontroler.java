@@ -71,7 +71,7 @@ public class Kontroler {
         System.out.println("Logovanje korisnika...");
         KlijentTransfer kt = new KlijentTransfer();
         kt.setOperacija(Konstante.ULOGUJ_KORISNIKA);
-        Korisnik parametar = new Korisnik(null, username, password); 
+        Korisnik parametar = new Korisnik(null, null, username, password, true);
         parametar.setHashPassword(password);
         kt.setParametar(parametar);
         Komunikacija.vratiInstancu().posaljiZahtev(kt);
@@ -83,5 +83,19 @@ public class Kontroler {
             Exception exec = st.getException();
             throw exec;
         }
+    }
+
+    public List<AbstractObjekat> ucitajListuRezervacija() throws Exception {
+        KlijentTransfer kt = new KlijentTransfer();
+            kt.setOperacija(Konstante.UCITAJ_LISTU_REZERVACIJA);
+            Komunikacija.vratiInstancu().posaljiZahtev(kt);
+            ServerTransfer st = Komunikacija.vratiInstancu().procitajOdgovor();
+            if(st.getUspesnost() == 1){
+                return (List<AbstractObjekat>) st.getPodaci();
+            }
+            else {
+                Exception exec = st.getException();
+                throw exec;
+            }
     }
 }
