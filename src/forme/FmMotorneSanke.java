@@ -5,6 +5,7 @@
  */
 package forme;
 
+import domen.AbstractObjekat;
 import domen.MotorneSanke;
 import domen.TipSanki;
 import java.util.List;
@@ -17,8 +18,6 @@ import kontroler.Kontroler;
  * @author Daniel
  */
 public class FmMotorneSanke extends javax.swing.JFrame {
-
-    private MotorneSanke ms;
 
     /**
      * Creates new form FmMotorneSanke
@@ -49,7 +48,7 @@ public class FmMotorneSanke extends javax.swing.JFrame {
         btn_ponisti = new javax.swing.JButton();
         btn_otkazi = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
         jLabel1.setText("Motorne sanke ID");
@@ -59,6 +58,12 @@ public class FmMotorneSanke extends javax.swing.JFrame {
         jLabel3.setText("Broj mesta za sedenje");
 
         jLabel4.setText("Tip sanki");
+
+        cbox_tip_sanki.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbox_tip_sankiActionPerformed(evt);
+            }
+        });
 
         btn_sacuvaj.setText("Sacuvaj");
         btn_sacuvaj.addActionListener(new java.awt.event.ActionListener() {
@@ -142,17 +147,13 @@ public class FmMotorneSanke extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
 
-            String motorneSankeID = txt_motorne_sanke_id.getText();
             String brojSasije = txt_broj_sasije.getText();
             String brojMesta = txt_broj_mesta.getText();
             TipSanki tip = (TipSanki) cbox_tip_sanki.getSelectedItem();
-
-            MotorneSanke motorneSanke = kreirajMotorneSanke(motorneSankeID, brojSasije, brojMesta, tip);
-            
-            Kontroler kontroler = Kontroler.vratiInstancuKontrolera();
-            if(this.ms==null){
-                kontroler.sacuvajMotorneSanke(motorneSanke);
-            }
+            MotorneSanke motorneSanke = kreirajMotorneSanke(brojSasije, brojMesta, tip);
+            AbstractObjekat o = Kontroler.vratiInstancuKontrolera().sacuvajMotorneSanke(motorneSanke);
+            JOptionPane.showMessageDialog(rootPane, "Uspesno sacuvane sanke ID : " + o.vratiVrednostPK());
+            txt_motorne_sanke_id.setText(o.vratiVrednostPK());
         } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, e.getMessage());
         }
@@ -170,6 +171,10 @@ public class FmMotorneSanke extends javax.swing.JFrame {
         setVisible(false);
         dispose();
     }//GEN-LAST:event_btn_otkaziActionPerformed
+
+    private void cbox_tip_sankiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbox_tip_sankiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbox_tip_sankiActionPerformed
 
     /**
      * @param args the command line arguments
@@ -220,12 +225,20 @@ public class FmMotorneSanke extends javax.swing.JFrame {
     private javax.swing.JTextField txt_motorne_sanke_id;
     // End of variables declaration//GEN-END:variables
 
-    private MotorneSanke kreirajMotorneSanke(String motorneSankeID, String brojSasije, String brojMesta, TipSanki tip) throws Exception {
+    private MotorneSanke kreirajMotorneSanke(String brojSasije, String brojMesta, TipSanki tip) throws Exception {
         MotorneSanke msanke = new MotorneSanke();
-        if (motorneSankeID == null || motorneSankeID.isEmpty()){
-            throw new Exception("ID nije unet!");
+//        if (motorneSankeID == null || motorneSankeID.isEmpty()){
+//            throw new Exception("ID nije unet!");
+//        }
+        if(brojSasije.isEmpty() || brojMesta.isEmpty() || tip == null){
+            throw new Exception("Sva polja su obavezna!");
         }
-        msanke.setMotorneSankeID(motorneSankeID);
+        try{
+            double broj = Double.parseDouble(brojMesta);
+        } catch (NumberFormatException nfe){
+            throw new Exception("Broj mesta za sedenje nije dobro unet!");
+        }
+        msanke.setMotorneSankeID("0");
         msanke.setBrojSasije(brojSasije);
         msanke.setBrojMestaZaSedenje(brojMesta);
         msanke.setTipSanki(tip);
@@ -234,12 +247,13 @@ public class FmMotorneSanke extends javax.swing.JFrame {
 
     private void pripremiFormu() {
         popuniComboBox();
+        txt_motorne_sanke_id.setEnabled(false);
     }
 
     private void popuniComboBox() {
         cbox_tip_sanki.removeAllItems();
         try {
-            List<TipSanki> listaTipovaMS = Kontroler.vratiInstancuKontrolera().vratiListuTipovaMS();
+            List<AbstractObjekat> listaTipovaMS = Kontroler.vratiInstancuKontrolera().ucitajListuTipovaMS();
             cbox_tip_sanki.setModel(new DefaultComboBoxModel<>(listaTipovaMS.toArray()));
             
         } catch (Exception e) {

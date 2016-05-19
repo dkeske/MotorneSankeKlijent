@@ -37,13 +37,39 @@ public class Kontroler {
         sesija = new HashMap();
     }
 
-    public List<TipSanki> vratiListuTipovaMS() throws Exception {
-        
-        return null;
+    public List<AbstractObjekat> ucitajListuTipovaMS() throws Exception {
+        List<AbstractObjekat> lista;
+        try {
+            System.out.println("Ucitavanje liste tipova MS");
+            KlijentTransfer kt = new KlijentTransfer();
+            kt.setOperacija(Konstante.UCITAJ_LISTU_TIPOVA_MS);
+            Komunikacija.vratiInstancu().posaljiZahtev(kt);
+            ServerTransfer st = Komunikacija.vratiInstancu().procitajOdgovor();
+            if(st.getUspesnost() == 1){
+                return (List<AbstractObjekat>) st.getPodaci();
+            }
+            else {
+                Exception exec = st.getException();
+                throw exec;
+            }
+        } catch (IOException | ClassNotFoundException ex) {
+            throw new PovezivanjeException("Doslo je do greske u komunikaciji");
+        }
     }
 
-    public void sacuvajMotorneSanke(MotorneSanke motorneSanke) throws Exception {
-        
+    public AbstractObjekat sacuvajMotorneSanke(MotorneSanke motorneSanke) throws Exception {
+        KlijentTransfer kt = new KlijentTransfer();
+            kt.setOperacija(Konstante.KREIRAJ_MOTORNE_SANKE);
+            kt.setParametar(motorneSanke);
+            Komunikacija.vratiInstancu().posaljiZahtev(kt);
+            ServerTransfer st = Komunikacija.vratiInstancu().procitajOdgovor();
+            if(st.getUspesnost() == 1){
+                return (AbstractObjekat) st.getPodaci();
+            }
+            else {
+                Exception exec = st.getException();
+                throw exec;
+            }
         
         
     }
