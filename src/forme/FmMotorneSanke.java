@@ -11,23 +11,22 @@ import domen.TipSanki;
 import java.awt.HeadlessException;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import kontroler.Kontroler;
-import sesija.Sesija;
 
 /**
  *
  * @author Daniel
  */
 public class FmMotorneSanke extends javax.swing.JFrame {
+
     private MotorneSanke ms;
     FmSankePrikaz parent;
     String mode;
+
     /**
      * Creates new form FmMotorneSanke
      */
-    
     public FmMotorneSanke() {
         initComponents();
         pripremiFormu();
@@ -43,8 +42,6 @@ public class FmMotorneSanke extends javax.swing.JFrame {
         this.parent.setEnabled(false);
         mode = "edit";
     }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -177,9 +174,8 @@ public class FmMotorneSanke extends javax.swing.JFrame {
             MotorneSanke motorneSanke = kreirajMotorneSanke(motorneSankeID, brojSasije, brojMesta, tip);
             MotorneSanke motS = (MotorneSanke) Kontroler.vratiInstancuKontrolera().sacuvajMotorneSanke(motorneSanke);
             String ID = motS.getPrimaryKey();
-            if(mode.equals("edit")){
+            if (mode.equals("edit")) {
                 ID = motS.getMotorneSankeID();
-                updateListe(motS);
             }
             JOptionPane.showMessageDialog(rootPane, "Uspesno sacuvane sanke ID : " + ID);
             txt_motorne_sanke_id.setText(ID);
@@ -193,22 +189,30 @@ public class FmMotorneSanke extends javax.swing.JFrame {
         txt_motorne_sanke_id.setText("");
         txt_broj_sasije.setText("");
         txt_broj_mesta.setText("");
-        
+
     }//GEN-LAST:event_btn_ponistiActionPerformed
 
     private void btn_otkaziActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_otkaziActionPerformed
-        setVisible(false);
-        parent.setEnabled(true);
-        dispose();
+        formClosing();
     }//GEN-LAST:event_btn_otkaziActionPerformed
+
+    private void formClosing() {
+        setVisible(false);
+        if (mode.equals("edit")) {
+            parent.dispose();
+            parent = new FmSankePrikaz();
+            parent.setVisible(true);
+        }
+        dispose();
+    }
 
     private void cbox_tip_sankiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbox_tip_sankiActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbox_tip_sankiActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        if(mode.equals("edit")){
-            parent.setEnabled(true);
+        if (mode.equals("edit")) {
+            formClosing();
         }
     }//GEN-LAST:event_formWindowClosing
 
@@ -266,15 +270,15 @@ public class FmMotorneSanke extends javax.swing.JFrame {
 //        if (motorneSankeID == null || motorneSankeID.isEmpty()){
 //            throw new Exception("ID nije unet!");
 //        }
-        if(brojSasije.isEmpty() || brojMesta.isEmpty() || tip == null){
+        if (brojSasije.isEmpty() || brojMesta.isEmpty() || tip == null) {
             throw new Exception("Sva polja su obavezna!");
         }
-        try{
+        try {
             double broj = Double.parseDouble(brojMesta);
-        } catch (NumberFormatException nfe){
+        } catch (NumberFormatException nfe) {
             throw new Exception("Broj mesta za sedenje nije dobro unet!");
         }
-        if(mode.equals("edit")){
+        if (mode.equals("edit")) {
             System.out.println(mode + " je mode");
             msanke.setMotorneSankeID(motorneSankeID);
         } else {
@@ -296,7 +300,7 @@ public class FmMotorneSanke extends javax.swing.JFrame {
         try {
             List<AbstractObjekat> listaTipovaMS = Kontroler.vratiInstancuKontrolera().ucitajListuTipovaMS();
             cbox_tip_sanki.setModel(new DefaultComboBoxModel<>(listaTipovaMS.toArray()));
-            
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, e.getMessage());
         }
@@ -307,12 +311,5 @@ public class FmMotorneSanke extends javax.swing.JFrame {
         txt_broj_sasije.setText(ms.getBrojSasije());
         txt_broj_mesta.setText(ms.getBrojMestaZaSedenje());
         cbox_tip_sanki.setSelectedItem(ms.getTipSanki());
-    }
-
-    private void updateListe(MotorneSanke motS) {
-        List<MotorneSanke> listaMS = (List<MotorneSanke>) Sesija.vratiInstancu().getMapa().get("lista");
-        listaMS.remove(motS);
-        listaMS.add(motS);
-        parent.tableUpdate();
     }
 }

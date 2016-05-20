@@ -197,9 +197,5 @@ public class FmSankePrikaz extends javax.swing.JFrame {
         }
 
     }
-    public void tableUpdate(){
-        ModelPrikazSanke mps = (ModelPrikazSanke) tbl_sanke.getModel();
-        mps.fireTableDataChanged();
-    }
 }
 
