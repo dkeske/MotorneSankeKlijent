@@ -124,4 +124,22 @@ public class Kontroler {
                 throw exec;
             }
     }
+    public List<AbstractObjekat> ucitajListuVozaca() throws PovezivanjeException, Exception {
+        try {
+            System.out.println("Ucitavanje liste vozaca");
+            KlijentTransfer kt = new KlijentTransfer();
+            kt.setOperacija(Konstante.UCITAJ_LISTU_VOZACA);
+            Komunikacija.vratiInstancu().posaljiZahtev(kt);
+            ServerTransfer st = Komunikacija.vratiInstancu().procitajOdgovor();
+            if(st.getUspesnost() == 1){
+                return (List<AbstractObjekat>) st.getPodaci();
+            }
+            else {
+                Exception exec = st.getException();
+                throw exec;
+            }
+        } catch (IOException | ClassNotFoundException ex) {
+            throw new PovezivanjeException("Doslo je do greske u komunikaciji");
+        }
+    }
 }

@@ -5,17 +5,33 @@
  */
 package forme;
 
+import domen.AbstractObjekat;
+import domen.MotorneSanke;
+import domen.StavkaRezervacijeVoznje;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import kontroler.Kontroler;
+import model.ModelStavka;
+
 /**
  *
  * @author Daniel
  */
 public class FmRezervacija extends javax.swing.JFrame {
 
+    ModelStavka modelS;
+
     /**
      * Creates new form FmRezervacija
      */
     public FmRezervacija() {
         initComponents();
+        popuniFormu();
     }
 
     /**
@@ -27,36 +43,30 @@ public class FmRezervacija extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextField1 = new javax.swing.JTextField();
+        txt_rezervacija_id = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txt_datum_rezervacije = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbl_stavke = new javax.swing.JTable();
+        rbtn_uplata = new javax.swing.JRadioButton();
+        cbox_vozac = new javax.swing.JComboBox();
+        btn_plus = new javax.swing.JButton();
+        btn_minus = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTextField1.setText("jTextField1");
-
         jLabel1.setText("Rezervacija ID");
 
-        jLabel2.setText("jLabel1");
+        jLabel2.setText("Datum rezervacije");
 
-        jTextField2.setText("jTextField1");
+        jLabel3.setText("Uplata unapred");
 
-        jLabel3.setText("jLabel1");
+        jLabel4.setText("Vozac");
 
-        jTextField3.setText("jTextField1");
-
-        jLabel4.setText("jLabel1");
-
-        jTextField4.setText("jTextField1");
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_stavke.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -67,7 +77,25 @@ public class FmRezervacija extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tbl_stavke);
+
+        rbtn_uplata.setText("Da");
+
+        cbox_vozac.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        btn_plus.setText("+");
+        btn_plus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_plusActionPerformed(evt);
+            }
+        });
+
+        btn_minus.setText("-");
+        btn_minus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_minusActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -75,46 +103,67 @@ public class FmRezervacija extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(92, 92, 92))
+                    .addComponent(jLabel1)
+                    .addComponent(rbtn_uplata)
+                    .addComponent(txt_rezervacija_id)
+                    .addComponent(txt_datum_rezervacije)
+                    .addComponent(cbox_vozac, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 424, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btn_plus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_minus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(35, 35, 35)
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(35, 35, 35)
-                        .addComponent(jLabel3)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(35, 35, 35)
-                        .addComponent(jLabel4)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(txt_rezervacija_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(35, 35, 35)
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(txt_datum_rezervacije, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(35, 35, 35)
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18)
+                                .addComponent(rbtn_uplata)
+                                .addGap(32, 32, 32)
+                                .addComponent(jLabel4)
+                                .addGap(18, 18, 18)
+                                .addComponent(cbox_vozac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(58, 58, 58)
+                        .addComponent(btn_plus)
+                        .addGap(44, 44, 44)
+                        .addComponent(btn_minus)))
                 .addContainerGap(51, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btn_plusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_plusActionPerformed
+        // TODO add your handling code here:
+        modelS.dodajNovuStavku();
+    }//GEN-LAST:event_btn_plusActionPerformed
+
+    private void btn_minusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_minusActionPerformed
+        modelS.getListaStavki().remove(tbl_stavke.getSelectedRow());
+        modelS.fireTableDataChanged();
+    }//GEN-LAST:event_btn_minusActionPerformed
 
     /**
      * @param args the command line arguments
@@ -152,15 +201,33 @@ public class FmRezervacija extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_minus;
+    private javax.swing.JButton btn_plus;
+    private javax.swing.JComboBox cbox_vozac;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JRadioButton rbtn_uplata;
+    private javax.swing.JTable tbl_stavke;
+    private javax.swing.JTextField txt_datum_rezervacije;
+    private javax.swing.JTextField txt_rezervacija_id;
     // End of variables declaration//GEN-END:variables
+
+    private void popuniFormu() {
+        try {
+            List<AbstractObjekat> lista = Kontroler.vratiInstancuKontrolera().ucitajListuVozaca();
+            cbox_vozac.setModel(new DefaultComboBoxModel(lista.toArray()));
+            JComboBox cbox_ms = new JComboBox(Kontroler.vratiInstancuKontrolera().ucitajListuMotornihSanki().toArray());
+            modelS = new ModelStavka(new ArrayList<StavkaRezervacijeVoznje>());
+            tbl_stavke.setModel(modelS);
+            tbl_stavke.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(cbox_ms));
+            tbl_stavke.setColumnSelectionAllowed(true);
+        } catch (Exception ex) {
+            Logger.getLogger(FmRezervacija.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
 }
