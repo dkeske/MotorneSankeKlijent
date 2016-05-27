@@ -55,6 +55,7 @@ public class ModelStavka extends AbstractTableModel {
 
     public void setListaStavki(List<StavkaRezervacijeVoznje> listaStavki) {
         this.listaStavki = listaStavki;
+        fireTableDataChanged();
     }
 
     @Override
@@ -87,6 +88,7 @@ public class ModelStavka extends AbstractTableModel {
 
     public void dodajNovuStavku() {
         StavkaRezervacijeVoznje nova = new StavkaRezervacijeVoznje();
+        nova.setStavkaRezervacijeID("0");
         nova.setRedniBrojStavke(max++);
         listaStavki.add(nova);
         fireTableDataChanged();

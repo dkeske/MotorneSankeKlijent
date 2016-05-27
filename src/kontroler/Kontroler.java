@@ -8,6 +8,7 @@ package kontroler;
 import domen.AbstractObjekat;
 import domen.Korisnik;
 import domen.MotorneSanke;
+import domen.RezervacijaVoznje;
 import domen.TipSanki;
 import exception.PovezivanjeException;
 import java.io.IOException;
@@ -141,5 +142,20 @@ public class Kontroler {
         } catch (IOException | ClassNotFoundException ex) {
             throw new PovezivanjeException("Doslo je do greske u komunikaciji");
         }
+    }
+
+    public AbstractObjekat sacuvajRezervaciju(RezervacijaVoznje rzv) throws Exception{
+        KlijentTransfer kt = new KlijentTransfer();
+            kt.setOperacija(Konstante.KREIRAJ_REZERVACIJU_VOZNJE);
+            kt.setParametar(rzv);
+            Komunikacija.vratiInstancu().posaljiZahtev(kt);
+            ServerTransfer st = Komunikacija.vratiInstancu().procitajOdgovor();
+            if(st.getUspesnost() == 1){
+                return (AbstractObjekat) st.getPodaci();
+            }
+            else {
+                Exception exec = st.getException();
+                throw exec;
+            }
     }
 }

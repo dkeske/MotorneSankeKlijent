@@ -6,15 +6,20 @@
 package forme;
 
 import domen.AbstractObjekat;
-import domen.MotorneSanke;
+import domen.RezervacijaVoznje;
 import domen.StavkaRezervacijeVoznje;
+import domen.Vozac;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import kontroler.Kontroler;
 import model.ModelStavka;
 
@@ -32,6 +37,14 @@ public class FmRezervacija extends javax.swing.JFrame {
     public FmRezervacija() {
         initComponents();
         popuniFormu();
+        txt_rezervacija_id.setEnabled(false);
+    }
+
+    FmRezervacija(RezervacijaVoznje rez) {
+        initComponents();
+        popuniFormu();
+        txt_rezervacija_id.setEnabled(false);
+        ucitajRezervaciju(rez);
     }
 
     /**
@@ -55,8 +68,9 @@ public class FmRezervacija extends javax.swing.JFrame {
         cbox_vozac = new javax.swing.JComboBox();
         btn_plus = new javax.swing.JButton();
         btn_minus = new javax.swing.JButton();
+        btn_sacuvaj = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Rezervacija ID");
 
@@ -97,6 +111,13 @@ public class FmRezervacija extends javax.swing.JFrame {
             }
         });
 
+        btn_sacuvaj.setText("Sacuvaj");
+        btn_sacuvaj.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_sacuvajActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -104,6 +125,7 @@ public class FmRezervacija extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btn_sacuvaj, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel3)
                     .addComponent(jLabel4)
@@ -149,7 +171,9 @@ public class FmRezervacija extends javax.swing.JFrame {
                         .addComponent(btn_plus)
                         .addGap(44, 44, 44)
                         .addComponent(btn_minus)))
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btn_sacuvaj)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -164,6 +188,31 @@ public class FmRezervacija extends javax.swing.JFrame {
         modelS.getListaStavki().remove(tbl_stavke.getSelectedRow());
         modelS.fireTableDataChanged();
     }//GEN-LAST:event_btn_minusActionPerformed
+
+    private void btn_sacuvajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_sacuvajActionPerformed
+        try {
+            String datum = txt_datum_rezervacije.getText();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+            Date datume = sdf.parse(datum);
+            boolean unapred = rbtn_uplata.isSelected();
+            Vozac vozac = (Vozac) cbox_vozac.getSelectedItem();
+            List<StavkaRezervacijeVoznje> listaStavki = modelS.getListaStavki();
+            for (StavkaRezervacijeVoznje stavkaRezervacijeVoznje : listaStavki) {
+                if(stavkaRezervacijeVoznje.getMotorneSanke() == null){
+                    throw new Exception("Svaka stavka mora imati sanke!");
+                }
+            }
+            RezervacijaVoznje rzv = new RezervacijaVoznje("0", datume, unapred, vozac, listaStavki);
+            RezervacijaVoznje rzvNova = (RezervacijaVoznje) Kontroler.vratiInstancuKontrolera().sacuvajRezervaciju(rzv);
+            txt_rezervacija_id.setText(rzvNova.getRezevacijaID());
+            JOptionPane.showMessageDialog(rootPane, "Uspesno sacuvana rezervacija!");
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(rootPane, "Datum nije unet pravilno!");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+        }
+        
+    }//GEN-LAST:event_btn_sacuvajActionPerformed
 
     /**
      * @param args the command line arguments
@@ -203,6 +252,7 @@ public class FmRezervacija extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_minus;
     private javax.swing.JButton btn_plus;
+    private javax.swing.JButton btn_sacuvaj;
     private javax.swing.JComboBox cbox_vozac;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -224,10 +274,20 @@ public class FmRezervacija extends javax.swing.JFrame {
             tbl_stavke.setModel(modelS);
             tbl_stavke.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(cbox_ms));
             tbl_stavke.setColumnSelectionAllowed(true);
+
         } catch (Exception ex) {
             Logger.getLogger(FmRezervacija.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+
+    private void ucitajRezervaciju(RezervacijaVoznje rez) {
+        txt_rezervacija_id.setText(rez.getRezevacijaID());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        txt_datum_rezervacije.setText(sdf.format(rez.getDatumRezervacije()));
+        rbtn_uplata.setSelected(rez.isUplataUnapred());
+        cbox_vozac.setSelectedItem(rez.getVozac());
+        modelS.setListaStavki(rez.getListaStavki());
     }
 
 }
