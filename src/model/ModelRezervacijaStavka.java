@@ -5,23 +5,22 @@
  */
 package model;
 
-import domen.AbstractObjekat;
 import domen.MotorneSanke;
 import domen.StavkaRezervacijeVoznje;
-import java.sql.Savepoint;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
+import konstante.Konstante;
 
 /**
  *
  * @author Daniel
  */
-public class ModelStavka extends AbstractTableModel {
+public class ModelRezervacijaStavka extends AbstractTableModel {
 
     private List<StavkaRezervacijeVoznje> listaStavki;
     int max = 0;
 
-    public ModelStavka(List<StavkaRezervacijeVoznje> listaStavki) {
+    public ModelRezervacijaStavka(List<StavkaRezervacijeVoznje> listaStavki) {
         this.listaStavki = listaStavki;
     }
 
@@ -64,9 +63,11 @@ public class ModelStavka extends AbstractTableModel {
         switch (columnIndex) {
             case 0:
                 o.setRedniBrojStavke((int) aValue);
+                o.setStatus(Konstante.STATUS_IZMENJEN);
                 break;
             case 1:
                 o.setMotorneSanke((MotorneSanke) aValue);
+                o.setStatus(Konstante.STATUS_IZMENJEN);
                 break;
             default:
                 System.out.println("DEFAULT");
@@ -88,7 +89,7 @@ public class ModelStavka extends AbstractTableModel {
 
     public void dodajNovuStavku() {
         StavkaRezervacijeVoznje nova = new StavkaRezervacijeVoznje();
-        nova.setStavkaRezervacijeID("0");
+        nova.setStatus(Konstante.STATUS_NOVI);
         nova.setRedniBrojStavke(max++);
         listaStavki.add(nova);
         fireTableDataChanged();

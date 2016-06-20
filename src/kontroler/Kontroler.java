@@ -24,17 +24,18 @@ import transfer.ServerTransfer;
  * @author Daniel
  */
 public class Kontroler {
+
     private static Kontroler instanca;
     private HashMap sesija;
-    
-    public static Kontroler vratiInstancuKontrolera(){
-        if(instanca == null){
+
+    public static Kontroler vratiInstancuKontrolera() {
+        if (instanca == null) {
             instanca = new Kontroler();
         }
         return instanca;
     }
-    
-    private Kontroler(){
+
+    private Kontroler() {
         sesija = new HashMap();
     }
 
@@ -46,10 +47,9 @@ public class Kontroler {
             kt.setOperacija(Konstante.UCITAJ_LISTU_TIPOVA_MS);
             Komunikacija.vratiInstancu().posaljiZahtev(kt);
             ServerTransfer st = Komunikacija.vratiInstancu().procitajOdgovor();
-            if(st.getUspesnost() == 1){
+            if (st.getUspesnost() == 1) {
                 return (List<AbstractObjekat>) st.getPodaci();
-            }
-            else {
+            } else {
                 Exception exec = st.getException();
                 throw exec;
             }
@@ -60,20 +60,19 @@ public class Kontroler {
 
     public AbstractObjekat sacuvajMotorneSanke(MotorneSanke motorneSanke) throws Exception {
         KlijentTransfer kt = new KlijentTransfer();
-            kt.setOperacija(Konstante.KREIRAJ_MOTORNE_SANKE);
-            kt.setParametar(motorneSanke);
-            Komunikacija.vratiInstancu().posaljiZahtev(kt);
-            ServerTransfer st = Komunikacija.vratiInstancu().procitajOdgovor();
-            if(st.getUspesnost() == 1){
-                return (AbstractObjekat) st.getPodaci();
-            }
-            else {
-                Exception exec = st.getException();
-                throw exec;
-            }
-        
-        
+        kt.setOperacija(Konstante.KREIRAJ_MOTORNE_SANKE);
+        kt.setParametar(motorneSanke);
+        Komunikacija.vratiInstancu().posaljiZahtev(kt);
+        ServerTransfer st = Komunikacija.vratiInstancu().procitajOdgovor();
+        if (st.getUspesnost() == 1) {
+            return (AbstractObjekat) st.getPodaci();
+        } else {
+            Exception exec = st.getException();
+            throw exec;
+        }
+
     }
+
     public List<AbstractObjekat> ucitajListuMotornihSanki() throws PovezivanjeException, Exception {
         List<AbstractObjekat> lista;
         try {
@@ -82,10 +81,9 @@ public class Kontroler {
             kt.setOperacija(Konstante.UCITAJ_LISTU_MOTORNIH_SANKI);
             Komunikacija.vratiInstancu().posaljiZahtev(kt);
             ServerTransfer st = Komunikacija.vratiInstancu().procitajOdgovor();
-            if(st.getUspesnost() == 1){
+            if (st.getUspesnost() == 1) {
                 return (List<AbstractObjekat>) st.getPodaci();
-            }
-            else {
+            } else {
                 Exception exec = st.getException();
                 throw exec;
             }
@@ -103,10 +101,9 @@ public class Kontroler {
         kt.setParametar(parametar);
         Komunikacija.vratiInstancu().posaljiZahtev(kt);
         ServerTransfer st = Komunikacija.vratiInstancu().procitajOdgovor();
-        if(st.getUspesnost() == 1){
+        if (st.getUspesnost() == 1) {
             return (AbstractObjekat) st.getPodaci();
-        }
-        else {
+        } else {
             Exception exec = st.getException();
             throw exec;
         }
@@ -114,17 +111,17 @@ public class Kontroler {
 
     public List<AbstractObjekat> ucitajListuRezervacija() throws Exception {
         KlijentTransfer kt = new KlijentTransfer();
-            kt.setOperacija(Konstante.UCITAJ_LISTU_REZERVACIJA);
-            Komunikacija.vratiInstancu().posaljiZahtev(kt);
-            ServerTransfer st = Komunikacija.vratiInstancu().procitajOdgovor();
-            if(st.getUspesnost() == 1){
-                return (List<AbstractObjekat>) st.getPodaci();
-            }
-            else {
-                Exception exec = st.getException();
-                throw exec;
-            }
+        kt.setOperacija(Konstante.UCITAJ_LISTU_REZERVACIJA);
+        Komunikacija.vratiInstancu().posaljiZahtev(kt);
+        ServerTransfer st = Komunikacija.vratiInstancu().procitajOdgovor();
+        if (st.getUspesnost() == 1) {
+            return (List<AbstractObjekat>) st.getPodaci();
+        } else {
+            Exception exec = st.getException();
+            throw exec;
+        }
     }
+
     public List<AbstractObjekat> ucitajListuVozaca() throws PovezivanjeException, Exception {
         try {
             System.out.println("Ucitavanje liste vozaca");
@@ -132,10 +129,9 @@ public class Kontroler {
             kt.setOperacija(Konstante.UCITAJ_LISTU_VOZACA);
             Komunikacija.vratiInstancu().posaljiZahtev(kt);
             ServerTransfer st = Komunikacija.vratiInstancu().procitajOdgovor();
-            if(st.getUspesnost() == 1){
+            if (st.getUspesnost() == 1) {
                 return (List<AbstractObjekat>) st.getPodaci();
-            }
-            else {
+            } else {
                 Exception exec = st.getException();
                 throw exec;
             }
@@ -144,18 +140,31 @@ public class Kontroler {
         }
     }
 
-    public AbstractObjekat sacuvajRezervaciju(RezervacijaVoznje rzv) throws Exception{
+    public AbstractObjekat sacuvajRezervaciju(RezervacijaVoznje rzv) throws Exception {
         KlijentTransfer kt = new KlijentTransfer();
-            kt.setOperacija(Konstante.KREIRAJ_REZERVACIJU_VOZNJE);
-            kt.setParametar(rzv);
-            Komunikacija.vratiInstancu().posaljiZahtev(kt);
-            ServerTransfer st = Komunikacija.vratiInstancu().procitajOdgovor();
-            if(st.getUspesnost() == 1){
-                return (AbstractObjekat) st.getPodaci();
-            }
-            else {
-                Exception exec = st.getException();
-                throw exec;
-            }
+        kt.setOperacija(Konstante.KREIRAJ_REZERVACIJU_VOZNJE);
+        kt.setParametar(rzv);
+        Komunikacija.vratiInstancu().posaljiZahtev(kt);
+        ServerTransfer st = Komunikacija.vratiInstancu().procitajOdgovor();
+        if (st.getUspesnost() == 1) {
+            return (AbstractObjekat) st.getPodaci();
+        } else {
+            Exception exec = st.getException();
+            throw exec;
+        }
+    }
+
+    public AbstractObjekat izmeniRezervaciju(RezervacijaVoznje izmenjena) throws IOException, ClassNotFoundException, Exception {
+        KlijentTransfer kt = new KlijentTransfer();
+        kt.setOperacija(Konstante.ZAPAMTI_REZERVACIJU_VOZNJE);
+        kt.setParametar(izmenjena);
+        Komunikacija.vratiInstancu().posaljiZahtev(kt);
+        ServerTransfer st = Komunikacija.vratiInstancu().procitajOdgovor();
+        if (st.getUspesnost() == 1) {
+            return (AbstractObjekat) st.getPodaci();
+        } else {
+            Exception exec = st.getException();
+            throw exec;
+        }
     }
 }

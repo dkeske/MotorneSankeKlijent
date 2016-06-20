@@ -172,11 +172,16 @@ public class FmMotorneSanke extends javax.swing.JFrame {
             String brojMesta = txt_broj_mesta.getText();
             TipSanki tip = (TipSanki) cbox_tip_sanki.getSelectedItem();
             MotorneSanke motorneSanke = kreirajMotorneSanke(motorneSankeID, brojSasije, brojMesta, tip);
-            MotorneSanke motS = (MotorneSanke) Kontroler.vratiInstancuKontrolera().sacuvajMotorneSanke(motorneSanke);
-//            String ID = motS.getPrimaryKey();
-//            if (mode.equals("edit")) {
-                String ID = motS.getMotorneSankeID();
-//            }
+            MotorneSanke motS;
+            if (mode.equals("create")) {
+                motS = (MotorneSanke) Kontroler.vratiInstancuKontrolera().sacuvajMotorneSanke(motorneSanke);
+            } else if (mode.equals("edit")) {
+                motS = (MotorneSanke) Kontroler.vratiInstancuKontrolera().sacuvajMotorneSanke(motorneSanke);
+            } else {
+                motS = (MotorneSanke) Kontroler.vratiInstancuKontrolera().sacuvajMotorneSanke(motorneSanke);
+            }
+            String ID = motS.getMotorneSankeID();
+
             JOptionPane.showMessageDialog(rootPane, "Uspesno sacuvane sanke ID : " + ID);
             txt_motorne_sanke_id.setText(ID);
         } catch (Exception e) {

@@ -21,7 +21,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import kontroler.Kontroler;
-import model.ModelStavka;
+import model.ModelRezervacijaStavka;
 
 /**
  *
@@ -29,7 +29,8 @@ import model.ModelStavka;
  */
 public class FmRezervacija extends javax.swing.JFrame {
 
-    ModelStavka modelS;
+    ModelRezervacijaStavka modelS;
+    String mode = "create";
 
     /**
      * Creates new form FmRezervacija
@@ -45,6 +46,7 @@ public class FmRezervacija extends javax.swing.JFrame {
         popuniFormu();
         txt_rezervacija_id.setEnabled(false);
         ucitajRezervaciju(rez);
+        mode = "edit";
     }
 
     /**
@@ -191,6 +193,7 @@ public class FmRezervacija extends javax.swing.JFrame {
 
     private void btn_sacuvajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_sacuvajActionPerformed
         try {
+            String RezID = txt_rezervacija_id.getText();
             String datum = txt_datum_rezervacije.getText();
             SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
             Date datume = sdf.parse(datum);
@@ -198,20 +201,27 @@ public class FmRezervacija extends javax.swing.JFrame {
             Vozac vozac = (Vozac) cbox_vozac.getSelectedItem();
             List<StavkaRezervacijeVoznje> listaStavki = modelS.getListaStavki();
             for (StavkaRezervacijeVoznje stavkaRezervacijeVoznje : listaStavki) {
-                if(stavkaRezervacijeVoznje.getMotorneSanke() == null){
+                if (stavkaRezervacijeVoznje.getMotorneSanke() == null) {
                     throw new Exception("Svaka stavka mora imati sanke!");
                 }
             }
-            RezervacijaVoznje rzv = new RezervacijaVoznje("0", datume, unapred, vozac, listaStavki);
-            RezervacijaVoznje rzvNova = (RezervacijaVoznje) Kontroler.vratiInstancuKontrolera().sacuvajRezervaciju(rzv);
-            txt_rezervacija_id.setText(rzvNova.getRezevacijaID());
-            JOptionPane.showMessageDialog(rootPane, "Uspesno sacuvana rezervacija!");
+            if (mode.equals("create")) {
+                RezervacijaVoznje rzv = new RezervacijaVoznje("0", datume, unapred, vozac, listaStavki);
+                RezervacijaVoznje rzvNova = (RezervacijaVoznje) Kontroler.vratiInstancuKontrolera().sacuvajRezervaciju(rzv);
+                txt_rezervacija_id.setText(rzvNova.getRezevacijaID());
+                JOptionPane.showMessageDialog(rootPane, "Uspesno sacuvana rezervacija!");
+
+            } else {
+                RezervacijaVoznje izmenjena = new RezervacijaVoznje(RezID, datume, unapred, vozac, listaStavki);
+                RezervacijaVoznje izBaze = (RezervacijaVoznje) Kontroler.vratiInstancuKontrolera().izmeniRezervaciju(izmenjena);
+                JOptionPane.showMessageDialog(rootPane, "Uspesno izmenjena rezervacija!");
+            }
         } catch (ParseException ex) {
             JOptionPane.showMessageDialog(rootPane, "Datum nije unet pravilno!");
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage());
         }
-        
+
     }//GEN-LAST:event_btn_sacuvajActionPerformed
 
     /**
@@ -270,7 +280,7 @@ public class FmRezervacija extends javax.swing.JFrame {
             List<AbstractObjekat> lista = Kontroler.vratiInstancuKontrolera().ucitajListuVozaca();
             cbox_vozac.setModel(new DefaultComboBoxModel(lista.toArray()));
             JComboBox cbox_ms = new JComboBox(Kontroler.vratiInstancuKontrolera().ucitajListuMotornihSanki().toArray());
-            modelS = new ModelStavka(new ArrayList<StavkaRezervacijeVoznje>());
+            modelS = new ModelRezervacijaStavka(new ArrayList<StavkaRezervacijeVoznje>());
             tbl_stavke.setModel(modelS);
             tbl_stavke.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(cbox_ms));
             tbl_stavke.setColumnSelectionAllowed(true);
