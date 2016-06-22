@@ -36,6 +36,18 @@ public class ModelRezervacijaStavka extends AbstractTableModel {
     }
 
     @Override
+    public String getColumnName(int column) {
+        switch (column) {
+            case 0:
+                return "Redni Broj";
+            case 1:
+                return "Motorne Sanke";
+            default:
+                return "N/A";
+        }
+    }
+
+    @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         StavkaRezervacijeVoznje o = (StavkaRezervacijeVoznje) listaStavki.get(rowIndex);
         switch (columnIndex) {

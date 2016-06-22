@@ -167,4 +167,18 @@ public class Kontroler {
             throw exec;
         }
     }
+
+    public List<AbstractObjekat> pretraziRezervacije(String pretraga) throws IOException, ClassNotFoundException, Exception {
+        KlijentTransfer kt = new KlijentTransfer();
+        kt.setOperacija(Konstante.PRETRAZI_REZERVACIJU_VOZNJE);
+        kt.setParametar(pretraga);
+        Komunikacija.vratiInstancu().posaljiZahtev(kt);
+        ServerTransfer st = Komunikacija.vratiInstancu().procitajOdgovor();
+        if (st.getUspesnost() == 1) {
+            return (List<AbstractObjekat>) st.getPodaci();
+        } else {
+            Exception exec = st.getException();
+            throw exec;
+        }
+    }
 }

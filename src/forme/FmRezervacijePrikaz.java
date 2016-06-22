@@ -47,6 +47,8 @@ public class FmRezervacijePrikaz extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_rezervacije = new javax.swing.JTable();
         btn_izmeni = new javax.swing.JButton();
+        txt_pretraga = new javax.swing.JTextField();
+        btn_pretrazi = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -75,27 +77,47 @@ public class FmRezervacijePrikaz extends javax.swing.JFrame {
             }
         });
 
+        btn_pretrazi.setText("Pretrazi");
+        btn_pretrazi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_pretraziActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 504, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 504, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(59, 59, 59)
+                                .addComponent(btn_izmeni))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(44, 44, 44)
+                                .addComponent(txt_pretraga, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btn_pretrazi)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(61, 61, 61)
-                .addComponent(btn_izmeni)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_pretraga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_pretrazi))
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_izmeni)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pack();
@@ -114,6 +136,21 @@ public class FmRezervacijePrikaz extends javax.swing.JFrame {
         // TODO add your handling code here:
         parent.setVisible(true);
     }//GEN-LAST:event_formWindowClosing
+
+    private void btn_pretraziActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_pretraziActionPerformed
+        try {
+            // TODO add your handling code here:
+            String pretraga = txt_pretraga.getText();
+            listaRezervacija = Kontroler.vratiInstancuKontrolera().pretraziRezervacije(pretraga);
+            ModelPrikazRezervacija mpr = (ModelPrikazRezervacija) tbl_rezervacije.getModel();
+            mpr.setListaRezervacija(listaRezervacija);
+            mpr.fireTableDataChanged();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FmRezervacijePrikaz.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(FmRezervacijePrikaz.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btn_pretraziActionPerformed
 
     /**
      * @param args the command line arguments
@@ -152,8 +189,10 @@ public class FmRezervacijePrikaz extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_izmeni;
+    private javax.swing.JButton btn_pretrazi;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tbl_rezervacije;
+    private javax.swing.JTextField txt_pretraga;
     // End of variables declaration//GEN-END:variables
 
     private void srediFormu() {
