@@ -9,7 +9,6 @@ import domen.AbstractObjekat;
 import domen.Korisnik;
 import domen.MotorneSanke;
 import domen.RezervacijaVoznje;
-import domen.TipSanki;
 import exception.PovezivanjeException;
 import java.io.IOException;
 import komunikacija.Komunikacija;
@@ -26,17 +25,12 @@ import transfer.ServerTransfer;
 public class Kontroler {
 
     private static Kontroler instanca;
-    private HashMap sesija;
 
     public static Kontroler vratiInstancuKontrolera() {
         if (instanca == null) {
             instanca = new Kontroler();
         }
         return instanca;
-    }
-
-    private Kontroler() {
-        sesija = new HashMap();
     }
 
     public List<AbstractObjekat> ucitajListuTipovaMS() throws Exception {

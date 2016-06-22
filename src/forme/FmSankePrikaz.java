@@ -15,7 +15,6 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import kontroler.Kontroler;
 import model.ModelPrikazSanke;
-import sesija.Sesija;
 
 /**
  *
@@ -250,7 +249,6 @@ public class FmSankePrikaz extends javax.swing.JFrame {
         try {
             lista = Kontroler.vratiInstancuKontrolera().ucitajListuMotornihSanki();
             tbl_sanke.setModel(new ModelPrikazSanke(lista));
-            Sesija.vratiInstancu().getMapa().put("listaSanki", lista);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage());
         }
