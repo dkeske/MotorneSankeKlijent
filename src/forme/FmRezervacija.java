@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import kontroler.Kontroler;
 import model.ModelRezervacijaStavka;
@@ -31,6 +32,11 @@ public class FmRezervacija extends javax.swing.JFrame {
 
     ModelRezervacijaStavka modelS;
     String mode = "create";
+    JFrame parent;
+
+    public void setParent(JFrame parent) {
+        this.parent = parent;
+    }
 
     /**
      * Creates new form FmRezervacija
@@ -73,6 +79,11 @@ public class FmRezervacija extends javax.swing.JFrame {
         btn_sacuvaj = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jLabel1.setText("Rezervacija ID");
 
@@ -213,6 +224,9 @@ public class FmRezervacija extends javax.swing.JFrame {
 
             } else {
                 RezervacijaVoznje izmenjena = new RezervacijaVoznje(RezID, datume, unapred, vozac, listaStavki);
+                for (StavkaRezervacijeVoznje stavkaRezervacijeVoznje : listaStavki) {
+                    stavkaRezervacijeVoznje.setRezervacijaVoznje(izmenjena);
+                }
                 RezervacijaVoznje izBaze = (RezervacijaVoznje) Kontroler.vratiInstancuKontrolera().izmeniRezervaciju(izmenjena);
                 JOptionPane.showMessageDialog(rootPane, "Uspesno izmenjena rezervacija!");
             }
@@ -223,6 +237,18 @@ public class FmRezervacija extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_btn_sacuvajActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        if(mode.equals("edit")){
+            FmRezervacijePrikaz stara = (FmRezervacijePrikaz) parent;
+            FmRezervacijePrikaz nova = new FmRezervacijePrikaz();
+            nova.setParent(stara.parent);
+            nova.setVisible(true);
+        } else {
+            parent.setVisible(true);
+        }
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

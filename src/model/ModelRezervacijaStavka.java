@@ -22,6 +22,7 @@ public class ModelRezervacijaStavka extends AbstractTableModel {
 
     public ModelRezervacijaStavka(List<StavkaRezervacijeVoznje> listaStavki) {
         this.listaStavki = listaStavki;
+        max = listaStavki.size();
     }
 
     @Override

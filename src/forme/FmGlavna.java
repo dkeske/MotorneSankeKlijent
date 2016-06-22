@@ -5,7 +5,6 @@
  */
 package forme;
 
-import domen.AbstractObjekat;
 import domen.Korisnik;
 import java.awt.Color;
 import java.io.IOException;
@@ -16,7 +15,6 @@ import javax.swing.JOptionPane;
 import javax.swing.border.LineBorder;
 import komunikacija.Komunikacija;
 import kontroler.Kontroler;
-import start.StartKlijent;
 
 /**
  *
@@ -25,6 +23,7 @@ import start.StartKlijent;
 public class FmGlavna extends javax.swing.JFrame {
 
     Korisnik korisnik;
+
     /**
      * Creates new form GlavnaForma
      */
@@ -72,6 +71,7 @@ public class FmGlavna extends javax.swing.JFrame {
 
         lbl_username.setText("Korisnicko ime");
 
+        txt_username.setText("daniel");
         txt_username.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_usernameActionPerformed(evt);
@@ -79,6 +79,8 @@ public class FmGlavna extends javax.swing.JFrame {
         });
 
         lbl_password.setText("Lozinka");
+
+        txt_password.setText("daniel");
 
         btn_login.setText("Uloguj se");
         btn_login.addActionListener(new java.awt.event.ActionListener() {
@@ -257,7 +259,7 @@ public class FmGlavna extends javax.swing.JFrame {
                 Logger.getLogger(FmGlavna.class.getName()).log(Level.SEVERE, null, ex);
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(rootPane, ex.getMessage());
-                
+
             }
         }
     }//GEN-LAST:event_btn_loginActionPerformed
@@ -269,12 +271,18 @@ public class FmGlavna extends javax.swing.JFrame {
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
-        new FmRezervacija().setVisible(true);
+        FmRezervacija fmr = new FmRezervacija();
+        fmr.setParent(this);
+        this.setVisible(false);
+        fmr.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         // TODO add your handling code here:
-        new FmRezervacijePrikaz().setVisible(true);
+        FmRezervacijePrikaz fmrp = new FmRezervacijePrikaz();
+        fmrp.setParent(this);
+        this.setVisible(false);
+        fmrp.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**
@@ -359,12 +367,12 @@ public class FmGlavna extends javax.swing.JFrame {
     }
 
     private void pokreniSoket() throws IOException {
-        if(Komunikacija.vratiInstancu().getSocket()==null){
+        if (Komunikacija.vratiInstancu().getSocket() == null) {
             System.out.println("Postavljam socket");
             Socket socket = new Socket("127.0.0.1", 9000);
             Komunikacija.vratiInstancu().setSocket(socket);
             System.out.println("Postavio socket!");
-            
+
         }
     }
 }

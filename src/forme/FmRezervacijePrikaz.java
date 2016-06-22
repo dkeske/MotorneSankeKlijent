@@ -10,6 +10,7 @@ import domen.RezervacijaVoznje;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import kontroler.Kontroler;
 import model.ModelPrikazRezervacija;
 
@@ -20,6 +21,11 @@ import model.ModelPrikazRezervacija;
 public class FmRezervacijePrikaz extends javax.swing.JFrame {
 
     private List<AbstractObjekat> listaRezervacija;
+    JFrame parent;
+
+    public void setParent(JFrame parent) {
+        this.parent = parent;
+    }
 
     /**
      * Creates new form FmRezervacijePrikaz
@@ -43,6 +49,11 @@ public class FmRezervacijePrikaz extends javax.swing.JFrame {
         btn_izmeni = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         tbl_rezervacije.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -94,8 +105,15 @@ public class FmRezervacijePrikaz extends javax.swing.JFrame {
         // TODO add your handling code here:
         RezervacijaVoznje rez = (RezervacijaVoznje) listaRezervacija.get(tbl_rezervacije.getSelectedRow());
         FmRezervacija fmr = new FmRezervacija(rez);
+        fmr.setParent(this);
+        this.setVisible(false);
         fmr.setVisible(true);
     }//GEN-LAST:event_btn_izmeniActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        parent.setVisible(true);
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

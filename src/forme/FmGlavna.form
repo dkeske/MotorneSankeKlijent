@@ -200,6 +200,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txt_username">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="daniel"/>
+          </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txt_usernameActionPerformed"/>
           </Events>
@@ -210,6 +213,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txt_password">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="daniel"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="btn_login">
           <Properties>
