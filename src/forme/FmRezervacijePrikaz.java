@@ -141,7 +141,11 @@ public class FmRezervacijePrikaz extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
             String pretraga = txt_pretraga.getText();
-            listaRezervacija = Kontroler.vratiInstancuKontrolera().pretraziRezervacije(pretraga);
+            if (pretraga.isEmpty()) {
+                listaRezervacija = Kontroler.vratiInstancuKontrolera().ucitajListuRezervacija();
+            } else {
+                listaRezervacija = Kontroler.vratiInstancuKontrolera().pretraziRezervacije(pretraga);
+            }
             ModelPrikazRezervacija mpr = (ModelPrikazRezervacija) tbl_rezervacije.getModel();
             mpr.setListaRezervacija(listaRezervacija);
             mpr.fireTableDataChanged();
@@ -203,6 +207,6 @@ public class FmRezervacijePrikaz extends javax.swing.JFrame {
         } catch (Exception ex) {
             Logger.getLogger(FmRezervacijePrikaz.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
 }

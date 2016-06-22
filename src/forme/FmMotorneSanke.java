@@ -39,7 +39,7 @@ public class FmMotorneSanke extends javax.swing.JFrame {
         this.ms = ms;
         ucitajSankeUFormu();
         this.parent = parent;
-        this.parent.setEnabled(false);
+        this.parent.setVisible(false);
         mode = "edit";
     }
 
@@ -204,9 +204,11 @@ public class FmMotorneSanke extends javax.swing.JFrame {
     private void formClosing() {
         setVisible(false);
         if (mode.equals("edit")) {
+            
+            FmSankePrikaz novi = new FmSankePrikaz();
+            novi.setParent(parent.getParent());
             parent.dispose();
-            parent = new FmSankePrikaz();
-            parent.setVisible(true);
+            novi.setVisible(true);
         }
         dispose();
     }

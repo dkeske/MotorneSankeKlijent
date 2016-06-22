@@ -226,6 +226,8 @@ public class FmGlavna extends javax.swing.JFrame {
 
     private void prikaz_sankiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prikaz_sankiActionPerformed
         FmSankePrikaz fsp = new FmSankePrikaz();
+        fsp.setParent(this);
+        this.setVisible(false);
         fsp.setVisible(true);
     }//GEN-LAST:event_prikaz_sankiActionPerformed
 

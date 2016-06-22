@@ -23,6 +23,15 @@ import sesija.Sesija;
  */
 public class FmSankePrikaz extends javax.swing.JFrame {
 
+    private FmGlavna parent;
+
+    public FmGlavna getParent() {
+        return parent;
+    }
+
+    public void setParent(FmGlavna parent) {
+        this.parent = parent;
+    }
     /**
      * Creates new form FmSankePrikaz
      */
@@ -44,11 +53,16 @@ public class FmSankePrikaz extends javax.swing.JFrame {
         tbl_sanke = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         btn_izmeni = new javax.swing.JButton();
+        txt_pretrazi = new javax.swing.JTextField();
+        btn_pretrazi = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
             }
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
@@ -82,27 +96,46 @@ public class FmSankePrikaz extends javax.swing.JFrame {
             }
         });
 
+        btn_pretrazi.setText("Pretrazi");
+        btn_pretrazi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_pretraziActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(76, 76, 76)
+                        .addComponent(btn_izmeni)
+                        .addGap(121, 121, 121)
+                        .addComponent(jButton1)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(76, 76, 76)
-                .addComponent(btn_izmeni)
-                .addGap(121, 121, 121)
-                .addComponent(jButton1)
+                .addGap(53, 53, 53)
+                .addComponent(txt_pretrazi, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(48, 48, 48)
+                .addComponent(btn_pretrazi)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(28, 28, 28)
+                .addGap(22, 22, 22)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txt_pretrazi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_pretrazi))
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(53, 53, 53)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(btn_izmeni))
@@ -141,8 +174,32 @@ public class FmSankePrikaz extends javax.swing.JFrame {
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_formWindowActivated
+
+    private void btn_pretraziActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_pretraziActionPerformed
+        // TODO add your handling code here:
+        String pretraga = txt_pretrazi.getText();
+        List<AbstractObjekat> lista;
+        try {
+            if (pretraga.isEmpty()) {
+                lista = Kontroler.vratiInstancuKontrolera().ucitajListuMotornihSanki();
+            } else {
+                lista = Kontroler.vratiInstancuKontrolera().pretraziSanke(pretraga);
+            }
+            ModelPrikazSanke mps = (ModelPrikazSanke) tbl_sanke.getModel();
+            mps.setListaSanki(lista);
+            mps.fireTableDataChanged();
+        } catch (Exception ex) {
+            Logger.getLogger(FmSankePrikaz.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_btn_pretraziActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        parent.setVisible(true);
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
@@ -181,9 +238,11 @@ public class FmSankePrikaz extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_izmeni;
+    private javax.swing.JButton btn_pretrazi;
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tbl_sanke;
+    private javax.swing.JTextField txt_pretrazi;
     // End of variables declaration//GEN-END:variables
 
     private void srediFormu() {
@@ -198,4 +257,3 @@ public class FmSankePrikaz extends javax.swing.JFrame {
 
     }
 }
-
