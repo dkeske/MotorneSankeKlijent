@@ -7,6 +7,7 @@ package model;
 
 import domen.AbstractObjekat;
 import domen.RezervacijaVoznje;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
@@ -39,9 +40,10 @@ public class ModelPrikazRezervacija extends AbstractTableModel {
             case 0:
                 return rezv.getRezevacijaID();
             case 1:
-                return rezv.getDatumRezervacije();
+                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+                return sdf.format(rezv.getDatumRezervacije());
             case 2:
-                return rezv.isUplataUnapred();
+                return rezv.isUplataUnapred() ? "DA" : "NE";
             case 3:
                 return rezv.getVozac().getIme();
             default:

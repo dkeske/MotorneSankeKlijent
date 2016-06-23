@@ -29,7 +29,7 @@ public class ModelPrikazSanke extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return 4;
+        return 5;
     }
 
     @Override
@@ -44,6 +44,8 @@ public class ModelPrikazSanke extends AbstractTableModel {
                 return ms.getBrojMestaZaSedenje();
             case 3:
                 return ms.getTipSanki().getNazivTipa();
+            case 4:
+                return ms.getTipSanki().getNamena();
             default:
                 return "n/a";
         }
@@ -59,7 +61,9 @@ public class ModelPrikazSanke extends AbstractTableModel {
             case 2:
                 return "Broj mesta za sedenje";
             case 3:
-                return "Tip sanki";
+                return "Naziv tipa sanki";
+            case 4:
+                return "Namena";
             default:
                 return "n/a";
         }

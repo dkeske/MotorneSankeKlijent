@@ -7,6 +7,7 @@ package model;
 
 import domen.MotorneSanke;
 import domen.StavkaRezervacijeVoznje;
+import domen.TipSanki;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import konstante.Konstante;
@@ -32,7 +33,7 @@ public class ModelRezervacijaStavka extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return 2;
+        return 4;
     }
 
     @Override
@@ -41,7 +42,11 @@ public class ModelRezervacijaStavka extends AbstractTableModel {
             case 0:
                 return "Redni Broj";
             case 1:
-                return "Motorne Sanke";
+                return "Broj Sasije";
+            case 2:
+                return "Broj Mesta";
+            case 3:
+                return "Naziv Tipa";
             default:
                 return "N/A";
         }
@@ -54,7 +59,11 @@ public class ModelRezervacijaStavka extends AbstractTableModel {
             case 0:
                 return o.getRedniBrojStavke();
             case 1:
-                return o.getMotorneSanke();
+                return o.getMotorneSanke().getBrojSasije();
+            case 2:
+                return o.getMotorneSanke().getBrojMestaZaSedenje();
+            case 3:
+                return o.getMotorneSanke().getTipSanki().getNazivTipa();
             default:
                 return "N/A";
         }
@@ -74,13 +83,9 @@ public class ModelRezervacijaStavka extends AbstractTableModel {
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         StavkaRezervacijeVoznje o = (StavkaRezervacijeVoznje) listaStavki.get(rowIndex);
         switch (columnIndex) {
-            case 0:
-                o.setRedniBrojStavke((int) aValue);
-                o.setStatus(Konstante.STATUS_IZMENJEN);
-                break;
             case 1:
                 o.setMotorneSanke((MotorneSanke) aValue);
-                o.setStatus(Konstante.STATUS_IZMENJEN);
+                fireTableDataChanged();
                 break;
             default:
                 System.out.println("DEFAULT");
@@ -104,6 +109,7 @@ public class ModelRezervacijaStavka extends AbstractTableModel {
         StavkaRezervacijeVoznje nova = new StavkaRezervacijeVoznje();
         nova.setStatus(Konstante.STATUS_NOVI);
         nova.setRedniBrojStavke(max++);
+        nova.setMotorneSanke(new MotorneSanke("", "", "", new TipSanki("", "", "", 0)));
         listaStavki.add(nova);
         fireTableDataChanged();
     }

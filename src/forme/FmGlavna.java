@@ -30,6 +30,7 @@ public class FmGlavna extends javax.swing.JFrame {
     public FmGlavna() {
         initComponents();
         srediFormu();
+        this.getRootPane().setDefaultButton(btn_login);
 //        StartKlijent sk = new StartKlijent();
 //        sk.start();
     }
@@ -48,9 +49,9 @@ public class FmGlavna extends javax.swing.JFrame {
         lbl_username = new javax.swing.JLabel();
         txt_username = new javax.swing.JTextField();
         lbl_password = new javax.swing.JLabel();
-        txt_password = new javax.swing.JTextField();
         btn_login = new javax.swing.JButton();
         lbl_ulogovan = new javax.swing.JLabel();
+        txt_password = new javax.swing.JPasswordField();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -80,8 +81,6 @@ public class FmGlavna extends javax.swing.JFrame {
 
         lbl_password.setText("Lozinka");
 
-        txt_password.setText("daniel");
-
         btn_login.setText("Uloguj se");
         btn_login.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -90,6 +89,8 @@ public class FmGlavna extends javax.swing.JFrame {
         });
 
         lbl_ulogovan.setText("Ulogujte se");
+
+        txt_password.setText("daniel");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -105,8 +106,8 @@ public class FmGlavna extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txt_username, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
                             .addComponent(lbl_password)
-                            .addComponent(txt_password)
-                            .addComponent(lbl_username))
+                            .addComponent(lbl_username)
+                            .addComponent(txt_password))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -133,9 +134,9 @@ public class FmGlavna extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(txt_username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(lbl_password)
-                        .addGap(18, 18, 18)
-                        .addComponent(txt_password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(lbl_password)))
+                .addGap(18, 18, 18)
+                .addComponent(txt_password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btn_login)
                 .addContainerGap(28, Short.MAX_VALUE))
@@ -244,7 +245,12 @@ public class FmGlavna extends javax.swing.JFrame {
         }
         resetBorder();
         String username = txt_username.getText();
-        String password = txt_password.getText();
+        char [] pass = txt_password.getPassword();
+        String password = "";
+        for (char pas : pass) {
+            password += pas;
+        }
+        System.out.println(password);
         if (username.isEmpty()) {
             txt_username.setBorder(new LineBorder(Color.red));
         }
@@ -340,7 +346,7 @@ public class FmGlavna extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_username;
     private javax.swing.JMenu menu_korisnik;
     private javax.swing.JMenuItem prikaz_sanki;
-    private javax.swing.JTextField txt_password;
+    private javax.swing.JPasswordField txt_password;
     private javax.swing.JTextField txt_username;
     // End of variables declaration//GEN-END:variables
 
