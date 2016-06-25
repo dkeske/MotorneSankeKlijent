@@ -10,7 +10,6 @@ import domen.StavkaRezervacijeVoznje;
 import domen.TipSanki;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
-import konstante.Konstante;
 
 /**
  *
@@ -19,11 +18,9 @@ import konstante.Konstante;
 public class ModelRezervacijaStavka extends AbstractTableModel {
 
     private List<StavkaRezervacijeVoznje> listaStavki;
-    int max = 0;
 
     public ModelRezervacijaStavka(List<StavkaRezervacijeVoznje> listaStavki) {
         this.listaStavki = listaStavki;
-        max = listaStavki.size();
     }
 
     @Override
@@ -107,8 +104,7 @@ public class ModelRezervacijaStavka extends AbstractTableModel {
 
     public void dodajNovuStavku() {
         StavkaRezervacijeVoznje nova = new StavkaRezervacijeVoznje();
-        nova.setStatus(Konstante.STATUS_NOVI);
-        nova.setRedniBrojStavke(max++);
+        nova.setRedniBrojStavke(listaStavki.size());
         nova.setMotorneSanke(new MotorneSanke("", "", "", new TipSanki("", "", "", 0)));
         listaStavki.add(nova);
         fireTableDataChanged();

@@ -198,8 +198,16 @@ public class FmRezervacija extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_plusActionPerformed
 
     private void btn_minusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_minusActionPerformed
-        modelS.getListaStavki().remove(tbl_stavke.getSelectedRow());
-        modelS.fireTableDataChanged();
+        if (tbl_stavke.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(parent, "Molim vas odaberite stavku!");
+        } else {
+            modelS.getListaStavki().remove(tbl_stavke.getSelectedRow());
+            int i = 0;
+            for (StavkaRezervacijeVoznje stavka : modelS.getListaStavki()) {
+                stavka.setRedniBrojStavke(i++);
+            }
+            modelS.fireTableDataChanged();
+        }
     }//GEN-LAST:event_btn_minusActionPerformed
 
     private void btn_sacuvajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_sacuvajActionPerformed
@@ -211,8 +219,9 @@ public class FmRezervacija extends javax.swing.JFrame {
             boolean unapred = rbtn_uplata.isSelected();
             Vozac vozac = (Vozac) cbox_vozac.getSelectedItem();
             List<StavkaRezervacijeVoznje> listaStavki = modelS.getListaStavki();
+            JOptionPane.showMessageDialog(parent, listaStavki.size());
             for (StavkaRezervacijeVoznje stavkaRezervacijeVoznje : listaStavki) {
-                if (stavkaRezervacijeVoznje.getMotorneSanke() == null) {
+                if (stavkaRezervacijeVoznje.getMotorneSanke().getBrojSasije().equals("")) {
                     throw new Exception("Svaka stavka mora imati sanke!");
                 }
             }
@@ -240,7 +249,7 @@ public class FmRezervacija extends javax.swing.JFrame {
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
-        if(mode.equals("edit")){
+        if (mode.equals("edit")) {
             FmRezervacijePrikaz stara = (FmRezervacijePrikaz) parent;
             FmRezervacijePrikaz nova = new FmRezervacijePrikaz();
             nova.setParent(stara.parent);

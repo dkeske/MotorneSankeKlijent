@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import kontroler.Kontroler;
 import model.ModelPrikazRezervacija;
 
@@ -125,11 +126,15 @@ public class FmRezervacijePrikaz extends javax.swing.JFrame {
 
     private void btn_izmeniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_izmeniActionPerformed
         // TODO add your handling code here:
-        RezervacijaVoznje rez = (RezervacijaVoznje) listaRezervacija.get(tbl_rezervacije.getSelectedRow());
-        FmRezervacija fmr = new FmRezervacija(rez);
-        fmr.setParent(this);
-        this.setVisible(false);
-        fmr.setVisible(true);
+        if (tbl_rezervacije.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(parent, "Odaberite rezervaciju!");
+        } else {
+            RezervacijaVoznje rez = (RezervacijaVoznje) listaRezervacija.get(tbl_rezervacije.getSelectedRow());
+            FmRezervacija fmr = new FmRezervacija(rez);
+            fmr.setParent(this);
+            this.setVisible(false);
+            fmr.setVisible(true);
+        }
     }//GEN-LAST:event_btn_izmeniActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
