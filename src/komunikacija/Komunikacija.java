@@ -42,10 +42,10 @@ public class Komunikacija {
     }
 
     public void posaljiZahtev(KlijentTransfer kt) throws IOException {
-        out.writeObject(kt);
+        out.writeUnshared(kt);
     }
 
     public ServerTransfer procitajOdgovor() throws IOException, ClassNotFoundException {
-        return (ServerTransfer) in.readObject();
+        return (ServerTransfer) in.readUnshared();
     }
 }
