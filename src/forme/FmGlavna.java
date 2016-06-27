@@ -31,6 +31,7 @@ public class FmGlavna extends javax.swing.JFrame {
         initComponents();
         srediFormu();
         this.getRootPane().setDefaultButton(btn_login);
+        setLocationRelativeTo(null);
 //        StartKlijent sk = new StartKlijent();
 //        sk.start();
     }
@@ -266,7 +267,7 @@ public class FmGlavna extends javax.swing.JFrame {
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(FmGlavna.class.getName()).log(Level.SEVERE, null, ex);
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "GRESKA!", JOptionPane.ERROR_MESSAGE);
 
             }
         }

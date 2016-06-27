@@ -47,7 +47,7 @@ public class FmRezervacija extends javax.swing.JFrame {
         txt_rezervacija_id.setEnabled(false);
     }
 
-    FmRezervacija(RezervacijaVoznje rez) {
+    public FmRezervacija(RezervacijaVoznje rez) {
         initComponents();
         popuniFormu();
         txt_rezervacija_id.setEnabled(false);

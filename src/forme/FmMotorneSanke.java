@@ -31,6 +31,7 @@ public class FmMotorneSanke extends javax.swing.JFrame {
         initComponents();
         pripremiFormu();
         mode = "create";
+        setLocationRelativeTo(null);
     }
 
     public FmMotorneSanke(MotorneSanke ms, FmSankePrikaz parent) throws HeadlessException {
@@ -41,6 +42,7 @@ public class FmMotorneSanke extends javax.swing.JFrame {
         this.parent = parent;
         this.parent.setVisible(false);
         mode = "edit";
+        setLocationRelativeTo(null);
     }
 
     /**

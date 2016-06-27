@@ -41,6 +41,7 @@ public class FmSankePrikaz extends javax.swing.JFrame {
         initComponents();
 //        srediFormu();
         popuniDonjuTabelu();
+        setLocationRelativeTo(null);
     }
 
     /**

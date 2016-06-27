@@ -34,6 +34,7 @@ public class FmRezervacijePrikaz extends javax.swing.JFrame {
     public FmRezervacijePrikaz() {
         initComponents();
         srediFormu();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -154,6 +155,9 @@ public class FmRezervacijePrikaz extends javax.swing.JFrame {
             ModelPrikazRezervacija mpr = (ModelPrikazRezervacija) tbl_rezervacije.getModel();
             mpr.setListaRezervacija(listaRezervacija);
             mpr.fireTableDataChanged();
+            if(listaRezervacija.size()==0){
+                JOptionPane.showMessageDialog(this, "Sistem ne moze da nadje rezervaciju!", "GRESKA!", JOptionPane.ERROR_MESSAGE);
+            }
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(FmRezervacijePrikaz.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {

@@ -30,6 +30,7 @@ public class FmPretraziVozaca extends javax.swing.JFrame {
         initComponents();
         srediFormu();
         this.parent = parent;
+        setLocationRelativeTo(null);
     }
 
     /**
