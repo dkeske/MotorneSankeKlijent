@@ -8,7 +8,6 @@ package forme;
 import domen.AbstractObjekat;
 import domen.MotorneSanke;
 import domen.RezervacijaVoznje;
-import domen.StavkaRezervacijeVoznje;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -26,6 +25,7 @@ public class FmSankePrikaz extends javax.swing.JFrame {
 
     private FmGlavna parent;
 
+    @Override
     public FmGlavna getParent() {
         return parent;
     }
@@ -118,6 +118,11 @@ public class FmSankePrikaz extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tbl_rezervacije.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_rezervacijeMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tbl_rezervacije);
 
         btn_izmeni_rezervaciju.setText("Izmeni rezervaciju");
@@ -222,6 +227,9 @@ public class FmSankePrikaz extends javax.swing.JFrame {
                 ModelPrikazSanke mps = (ModelPrikazSanke) tbl_sanke.getModel();
                 MotorneSanke ms = (MotorneSanke) mps.getListaSanki().get(tbl_sanke.getSelectedRow());
                 List<AbstractObjekat> listaRezervacija = Kontroler.vratiInstancuKontrolera().pretraziRezervacije(ms.getBrojSasije());
+                tbl_rezervacije.setEnabled(true);
+                btn_izmeni.setEnabled(true);
+                btn_izmeni_rezervaciju.setEnabled(false);
                 ModelPrikazRezervacija mpr = (ModelPrikazRezervacija) tbl_rezervacije.getModel();
                 mpr.setListaRezervacija(listaRezervacija);
                 mpr.fireTableDataChanged();
@@ -230,6 +238,8 @@ public class FmSankePrikaz extends javax.swing.JFrame {
             } catch (Exception ex) {
                 Logger.getLogger(FmSankePrikaz.class.getName()).log(Level.SEVERE, null, ex);
             }
+        } else {
+            popuniDonjuTabelu();
         }
     }//GEN-LAST:event_tbl_sankeMouseClicked
 
@@ -242,6 +252,15 @@ public class FmSankePrikaz extends javax.swing.JFrame {
             fmr.setParent(this);
         }
     }//GEN-LAST:event_btn_izmeni_rezervacijuActionPerformed
+
+    private void tbl_rezervacijeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_rezervacijeMouseClicked
+        // TODO add your handling code here:
+        if(tbl_rezervacije.getSelectedRow()!=-1){
+            btn_izmeni_rezervaciju.setEnabled(true);
+        } else {
+            btn_izmeni_rezervaciju.setEnabled(false);
+        }
+    }//GEN-LAST:event_tbl_rezervacijeMouseClicked
 
     /**
      * @param args the command line arguments
@@ -303,5 +322,8 @@ public class FmSankePrikaz extends javax.swing.JFrame {
     private void popuniDonjuTabelu() {
         ModelPrikazRezervacija mpr = new ModelPrikazRezervacija(new ArrayList<AbstractObjekat>());
         tbl_rezervacije.setModel(mpr);
+        tbl_rezervacije.setEnabled(false);
+        btn_izmeni.setEnabled(false);
+        btn_izmeni_rezervaciju.setEnabled(false);
     }
 }

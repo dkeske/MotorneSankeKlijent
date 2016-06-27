@@ -79,6 +79,12 @@ public class FmRezervacijePrikaz extends javax.swing.JFrame {
             }
         });
 
+        txt_pretraga.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_pretragaKeyReleased(evt);
+            }
+        });
+
         btn_pretrazi.setText("Pretrazi");
         btn_pretrazi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -144,6 +150,7 @@ public class FmRezervacijePrikaz extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void btn_pretraziActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_pretraziActionPerformed
+        // TODO add your handling code here:
         try {
             // TODO add your handling code here:
             String pretraga = txt_pretraga.getText();
@@ -155,7 +162,7 @@ public class FmRezervacijePrikaz extends javax.swing.JFrame {
             ModelPrikazRezervacija mpr = (ModelPrikazRezervacija) tbl_rezervacije.getModel();
             mpr.setListaRezervacija(listaRezervacija);
             mpr.fireTableDataChanged();
-            if(listaRezervacija.size()==0){
+            if (listaRezervacija.size() == 0) {
                 JOptionPane.showMessageDialog(this, "Sistem ne moze da nadje rezervaciju!", "GRESKA!", JOptionPane.ERROR_MESSAGE);
             }
         } catch (ClassNotFoundException ex) {
@@ -164,6 +171,10 @@ public class FmRezervacijePrikaz extends javax.swing.JFrame {
             Logger.getLogger(FmRezervacijePrikaz.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btn_pretraziActionPerformed
+
+    private void txt_pretragaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_pretragaKeyReleased
+
+    }//GEN-LAST:event_txt_pretragaKeyReleased
 
     /**
      * @param args the command line arguments

@@ -100,6 +100,9 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="txt_pretraga">
+      <Events>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txt_pretragaKeyReleased"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btn_pretrazi">
       <Properties>
