@@ -104,7 +104,7 @@ public class ModelRezervacijaStavka extends AbstractTableModel {
 
     public void dodajNovuStavku() {
         StavkaRezervacijeVoznje nova = new StavkaRezervacijeVoznje();
-        nova.setRedniBrojStavke(listaStavki.size());
+        nova.setRedniBrojStavke(listaStavki.size()+1);
         nova.setMotorneSanke(new MotorneSanke("", "", "", new TipSanki("", "", "", 0)));
         listaStavki.add(nova);
         fireTableDataChanged();
