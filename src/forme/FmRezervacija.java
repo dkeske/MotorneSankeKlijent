@@ -6,9 +6,12 @@
 package forme;
 
 import domen.AbstractObjekat;
+import domen.MotorneSanke;
 import domen.RezervacijaVoznje;
 import domen.StavkaRezervacijeVoznje;
 import domen.Vozac;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,11 +32,13 @@ import model.ModelRezervacijaStavka;
  * @author Daniel
  */
 public class FmRezervacija extends javax.swing.JFrame {
-
+    
     ModelRezervacijaStavka modelS;
     String mode = "create";
     JFrame parent;
-
+    List<AbstractObjekat> listaDostupnihSanki;
+    JComboBox cbox_ms;
+    
     public void setParent(JFrame parent) {
         this.parent = parent;
     }
@@ -46,7 +51,7 @@ public class FmRezervacija extends javax.swing.JFrame {
         popuniFormu();
         txt_rezervacija_id.setEnabled(false);
     }
-
+    
     public FmRezervacija(RezervacijaVoznje rez) {
         initComponents();
         popuniFormu();
@@ -105,6 +110,11 @@ public class FmRezervacija extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tbl_stavke.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_stavkeMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbl_stavke);
 
         rbtn_uplata.setText("Da");
@@ -237,12 +247,13 @@ public class FmRezervacija extends javax.swing.JFrame {
                     throw new Exception("Svaka stavka mora imati sanke!");
                 }
             }
+            proveriDupleUnose();
             if (mode.equals("create")) {
                 RezervacijaVoznje rzv = new RezervacijaVoznje("0", datume, unapred, vozac, listaStavki);
                 RezervacijaVoznje rzvNova = (RezervacijaVoznje) Kontroler.vratiInstancuKontrolera().sacuvajRezervaciju(rzv);
                 txt_rezervacija_id.setText(rzvNova.getRezevacijaID());
                 JOptionPane.showMessageDialog(rootPane, "Uspesno sacuvana rezervacija!");
-
+                
             } else {
                 RezervacijaVoznje izmenjena = new RezervacijaVoznje(RezID, datume, unapred, vozac, listaStavki);
                 ArrayList<StavkaRezervacijeVoznje> novaLista = new ArrayList<>();
@@ -279,6 +290,10 @@ public class FmRezervacija extends javax.swing.JFrame {
         FmPretraziVozaca fmpv = new FmPretraziVozaca(this);
         fmpv.setVisible(true);
     }//GEN-LAST:event_btn_nadjiActionPerformed
+
+    private void tbl_stavkeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_stavkeMouseClicked
+        
+    }//GEN-LAST:event_tbl_stavkeMouseClicked
 
     /**
      * @param args the command line arguments
@@ -336,18 +351,40 @@ public class FmRezervacija extends javax.swing.JFrame {
         try {
             List<AbstractObjekat> lista = Kontroler.vratiInstancuKontrolera().ucitajListuVozaca();
             cbox_vozac.setModel(new DefaultComboBoxModel(lista.toArray()));
-            JComboBox cbox_ms = new JComboBox(Kontroler.vratiInstancuKontrolera().ucitajListuMotornihSanki().toArray());
+            listaDostupnihSanki = Kontroler.vratiInstancuKontrolera().ucitajListuMotornihSanki();
+            
+            cbox_ms = new JComboBox(listaDostupnihSanki.toArray());
+//            cbox_ms.addItemListener(new ItemListener() {
+//                @Override
+//                public void itemStateChanged(ItemEvent e) {
+//                    try {
+//                        if (e.getStateChange() == ItemEvent.SELECTED) {
+//                            Object obj = e.getItem();
+//                            System.out.println("OBJEKAT : " + obj);
+//                            listaDostupnihSanki = Kontroler.vratiInstancuKontrolera().ucitajListuMotornihSanki();
+//                            for (StavkaRezervacijeVoznje stavkaRezervacijeVoznje : modelS.getListaStavki()) {
+//                                if (!stavkaRezervacijeVoznje.getMotorneSanke().getMotorneSankeID().equals("")) {
+//                                    listaDostupnihSanki.remove(stavkaRezervacijeVoznje.getMotorneSanke());
+//                                }
+//                            }
+//                            cbox_ms.setModel(new DefaultComboBoxModel(listaDostupnihSanki.toArray()));
+//                        }
+//                    } catch (Exception ex) {
+//                        Logger.getLogger(FmRezervacija.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//                }
+//            });
             modelS = new ModelRezervacijaStavka(new ArrayList<StavkaRezervacijeVoznje>());
             tbl_stavke.setModel(modelS);
             tbl_stavke.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(cbox_ms));
             tbl_stavke.setColumnSelectionAllowed(true);
-
+            
         } catch (Exception ex) {
             Logger.getLogger(FmRezervacija.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
     }
-
+    
     private void ucitajRezervaciju(RezervacijaVoznje rez) {
         txt_rezervacija_id.setText(rez.getRezevacijaID());
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
@@ -355,10 +392,28 @@ public class FmRezervacija extends javax.swing.JFrame {
         rbtn_uplata.setSelected(rez.isUplataUnapred());
         cbox_vozac.setSelectedItem(rez.getVozac());
         modelS.setListaStavki(rez.getListaStavki());
+        for (StavkaRezervacijeVoznje stavkaRezervacijeVoznje : rez.getListaStavki()) {
+            listaDostupnihSanki.remove(stavkaRezervacijeVoznje.getMotorneSanke());
+        }
     }
     
-    public void postaviVozacaSelekt(Vozac v){
+    public void postaviVozacaSelekt(Vozac v) {
         cbox_vozac.setSelectedItem(v);
     }
 
+    private void proveriDupleUnose() throws Exception {
+        for (StavkaRezervacijeVoznje stav : modelS.getListaStavki()) {
+            int i = 0;
+            for (StavkaRezervacijeVoznje stavkaRezervacijeVoznje : modelS.getListaStavki()) {
+                if(stav.getMotorneSanke().equals(stavkaRezervacijeVoznje.getMotorneSanke())){
+                    i++;
+                    if(i==2){
+                        throw new Exception("Ne mozete rezervisati iste sanke vise puta!");
+                    }
+                }
+            }
+        }
+
+    }
+    
 }
