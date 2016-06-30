@@ -208,4 +208,32 @@ public class Kontroler {
         }
     }
 
+    public List<AbstractObjekat> obrisiSanke(MotorneSanke selected) throws IOException, ClassNotFoundException, Exception {
+        KlijentTransfer kt = new KlijentTransfer();
+        kt.setOperacija(Konstante.OBRISI_MOTORNE_SANKE);
+        kt.setParametar(selected);
+        Komunikacija.vratiInstancu().posaljiZahtev(kt);
+        ServerTransfer st = Komunikacija.vratiInstancu().procitajOdgovor();
+        if (st.getUspesnost() == 1) {
+            return (List<AbstractObjekat>) st.getPodaci();
+        } else {
+            Exception exec = st.getException();
+            throw exec;
+        }
+    }
+
+    public List<AbstractObjekat> obrisiRezervacij(RezervacijaVoznje rez) throws IOException, ClassNotFoundException, Exception {
+        KlijentTransfer kt = new KlijentTransfer();
+        kt.setOperacija(Konstante.OBRISI_REZERVACIJU_VOZNJE);
+        kt.setParametar(rez);
+        Komunikacija.vratiInstancu().posaljiZahtev(kt);
+        ServerTransfer st = Komunikacija.vratiInstancu().procitajOdgovor();
+        if (st.getUspesnost() == 1) {
+            return (List<AbstractObjekat>) st.getPodaci();
+        } else {
+            Exception exec = st.getException();
+            throw exec;
+        }
+    }
+
 }

@@ -31,6 +31,7 @@ public class FmPretraziVozaca extends javax.swing.JFrame {
         srediFormu();
         this.parent = parent;
         setLocationRelativeTo(null);
+        setTitle("Pretraga vozaca");
     }
 
     /**

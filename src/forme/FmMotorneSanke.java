@@ -32,6 +32,7 @@ public class FmMotorneSanke extends javax.swing.JFrame {
         pripremiFormu();
         mode = "create";
         setLocationRelativeTo(null);
+        setTitle("Unos sanki");
     }
 
     public FmMotorneSanke(MotorneSanke ms, FmSankePrikaz parent) throws HeadlessException {
@@ -43,6 +44,7 @@ public class FmMotorneSanke extends javax.swing.JFrame {
         this.parent.setVisible(false);
         mode = "edit";
         setLocationRelativeTo(null);
+        setTitle("Izmena sanki");
     }
 
     /**
@@ -184,10 +186,10 @@ public class FmMotorneSanke extends javax.swing.JFrame {
             }
             String ID = motS.getMotorneSankeID();
 
-            JOptionPane.showMessageDialog(rootPane, "Uspesno sacuvane sanke ID : " + ID);
+            JOptionPane.showMessageDialog(rootPane, "Uspesno sacuvane sanke ID : " + ID, "Cuvanje sanki", JOptionPane.INFORMATION_MESSAGE);
             txt_motorne_sanke_id.setText(ID);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+            JOptionPane.showMessageDialog(rootPane, "Sistem ne moze da sacuva motorne sanke!", "GRESKA", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btn_sacuvajActionPerformed
 

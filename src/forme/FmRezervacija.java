@@ -50,6 +50,7 @@ public class FmRezervacija extends javax.swing.JFrame {
         initComponents();
         popuniFormu();
         txt_rezervacija_id.setEnabled(false);
+        setTitle("Unos rezervacije");
     }
     
     public FmRezervacija(RezervacijaVoznje rez) {
@@ -58,6 +59,7 @@ public class FmRezervacija extends javax.swing.JFrame {
         txt_rezervacija_id.setEnabled(false);
         ucitajRezervaciju(rez);
         mode = "edit";
+        setTitle("Izmena rezervacije");
     }
 
     /**
@@ -268,7 +270,7 @@ public class FmRezervacija extends javax.swing.JFrame {
         } catch (ParseException ex) {
             JOptionPane.showMessageDialog(rootPane, "Datum nije unet pravilno!");
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+            JOptionPane.showMessageDialog(rootPane, "Sistem ne moze da sacuva rezervaciju!", "GRESKA", JOptionPane.ERROR_MESSAGE);
         }
 
     }//GEN-LAST:event_btn_sacuvajActionPerformed

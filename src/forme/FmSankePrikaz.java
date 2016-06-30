@@ -42,6 +42,7 @@ public class FmSankePrikaz extends javax.swing.JFrame {
 //        srediFormu();
         popuniDonjuTabelu();
         setLocationRelativeTo(null);
+        setTitle("Prikaz sanki");
     }
 
     /**
@@ -61,6 +62,7 @@ public class FmSankePrikaz extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tbl_rezervacije = new javax.swing.JTable();
         btn_izmeni_rezervaciju = new javax.swing.JButton();
+        btn_obrisi = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -132,6 +134,13 @@ public class FmSankePrikaz extends javax.swing.JFrame {
             }
         });
 
+        btn_obrisi.setText("Obrisi sanke");
+        btn_obrisi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_obrisiActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -152,12 +161,15 @@ public class FmSankePrikaz extends javax.swing.JFrame {
                                 .addComponent(btn_pretrazi))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(232, 232, 232)
-                                .addComponent(btn_izmeni_rezervaciju))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(219, 219, 219)
-                                .addComponent(btn_izmeni, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(btn_izmeni_rezervaciju)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(131, 131, 131)
+                .addComponent(btn_izmeni, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(65, 65, 65)
+                .addComponent(btn_obrisi, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -169,7 +181,9 @@ public class FmSankePrikaz extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btn_izmeni)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_izmeni)
+                    .addComponent(btn_obrisi))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -209,6 +223,12 @@ public class FmSankePrikaz extends javax.swing.JFrame {
             ModelPrikazSanke mps = (ModelPrikazSanke) tbl_sanke.getModel();
             mps.setListaSanki(lista);
             mps.fireTableDataChanged();
+            if (lista.isEmpty()) {
+                JOptionPane.showMessageDialog(rootPane, "Sistem ne moze da nadje motorne sanke!", "GRESKA", JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Sistem je nasao sanke po zadatoj vrednosti", "Pretraga sanki", JOptionPane.INFORMATION_MESSAGE);
+
+            }
         } catch (Exception ex) {
             Logger.getLogger(FmSankePrikaz.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -229,6 +249,7 @@ public class FmSankePrikaz extends javax.swing.JFrame {
                 List<AbstractObjekat> listaRezervacija = Kontroler.vratiInstancuKontrolera().pretraziRezervacije(ms.getBrojSasije());
                 tbl_rezervacije.setEnabled(true);
                 btn_izmeni.setEnabled(true);
+                btn_obrisi.setEnabled(true);
                 btn_izmeni_rezervaciju.setEnabled(false);
                 ModelPrikazRezervacija mpr = (ModelPrikazRezervacija) tbl_rezervacije.getModel();
                 mpr.setListaRezervacija(listaRezervacija);
@@ -255,12 +276,28 @@ public class FmSankePrikaz extends javax.swing.JFrame {
 
     private void tbl_rezervacijeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_rezervacijeMouseClicked
         // TODO add your handling code here:
-        if(tbl_rezervacije.getSelectedRow()!=-1){
+        if (tbl_rezervacije.getSelectedRow() != -1) {
             btn_izmeni_rezervaciju.setEnabled(true);
         } else {
             btn_izmeni_rezervaciju.setEnabled(false);
         }
     }//GEN-LAST:event_tbl_rezervacijeMouseClicked
+
+    private void btn_obrisiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_obrisiActionPerformed
+        try {
+            // TODO add your handling code here:
+            ModelPrikazSanke mps = (ModelPrikazSanke) tbl_sanke.getModel();
+            MotorneSanke selected = (MotorneSanke) mps.getListaSanki().get(tbl_sanke.getSelectedRow());
+            List<AbstractObjekat> lista = Kontroler.vratiInstancuKontrolera().obrisiSanke(selected);
+            JOptionPane.showMessageDialog(rootPane, "Uspesno obrisane motorne sanke", "Brisanje sanki", JOptionPane.INFORMATION_MESSAGE);
+            mps.setListaSanki(lista);
+            mps.fireTableDataChanged();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FmSankePrikaz.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(rootPane, "Sistem ne moze da obrise motorne sanke!", "GRESKA", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btn_obrisiActionPerformed
 
     /**
      * @param args the command line arguments
@@ -300,6 +337,7 @@ public class FmSankePrikaz extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_izmeni;
     private javax.swing.JButton btn_izmeni_rezervaciju;
+    private javax.swing.JButton btn_obrisi;
     private javax.swing.JButton btn_pretrazi;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -324,6 +362,7 @@ public class FmSankePrikaz extends javax.swing.JFrame {
         tbl_rezervacije.setModel(mpr);
         tbl_rezervacije.setEnabled(false);
         btn_izmeni.setEnabled(false);
+        btn_obrisi.setEnabled(false);
         btn_izmeni_rezervaciju.setEnabled(false);
     }
 }

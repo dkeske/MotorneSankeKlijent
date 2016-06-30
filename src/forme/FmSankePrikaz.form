@@ -49,15 +49,18 @@
                               <EmptySpace min="-2" pref="232" max="-2" attributes="0"/>
                               <Component id="btn_izmeni_rezervaciju" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="219" max="-2" attributes="0"/>
-                              <Component id="btn_izmeni" min="-2" pref="132" max="-2" attributes="0"/>
-                          </Group>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="131" max="-2" attributes="0"/>
+              <Component id="btn_izmeni" min="-2" pref="119" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="65" max="-2" attributes="0"/>
+              <Component id="btn_obrisi" min="-2" pref="119" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -72,7 +75,10 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="167" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="btn_izmeni" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="btn_izmeni" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btn_obrisi" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jScrollPane2" min="-2" pref="169" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -155,6 +161,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_izmeni_rezervacijuActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btn_obrisi">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Obrisi sanke"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_obrisiActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

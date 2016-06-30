@@ -34,6 +34,7 @@ public class FmGlavna extends javax.swing.JFrame {
         this.getRootPane().setDefaultButton(btn_login);
         setLocationRelativeTo(null);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setTitle("Klijent");
 //        StartKlijent sk = new StartKlijent();
 //        sk.start();
     }
